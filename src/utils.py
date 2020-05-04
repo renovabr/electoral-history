@@ -541,9 +541,11 @@ def standardize_df_votes_party(df, year):
 
     return df
 
+
 def tic():
     import time
     TIC_TIME_START = time.time()
+
 
 def toc():
     import time
@@ -556,5 +558,6 @@ def toc():
     s = 'secounds' if seconds > 0 else s
     s = 'minutes' if minutes > 0 else s
     s = 'hours' if hours > 0 else s
-    m = (': > Elapsed time is %d:%d:%d {}.' % (hours, minutes, seconds)).format(s)
+    m = (': > Elapsed time is %d:%d:%d {}.' % (
+        hours, minutes, seconds)).format(s)
     print('%s\n' % m)
