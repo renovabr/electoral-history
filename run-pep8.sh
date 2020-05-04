@@ -2,3 +2,4 @@
 
 autopep8 --in-place --aggressive --aggressive src/*.py
 
+exit 0

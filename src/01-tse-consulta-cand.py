@@ -16,7 +16,9 @@ def main(argv):
     usage = '01-tse-consulta-cand.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
-        opts, args = getopt.getopt(argv, 'hy:p:e:s:', ['year=', 'path=', 'ext=', 'state='])
+        opts, args = getopt.getopt(
+            argv, 'hy:p:e:s:', [
+                'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
         print(usage)
         sys.exit(2)
@@ -56,6 +58,8 @@ def main(argv):
     cnx = mysql.connector.connect(**DATABASE)
     cur = cnx.cursor(buffered=True)
     dfcount = 0
+
+    tic()
 
     for st in STATES:
         candidates = path + 'consulta_cand_' + year + '_' + st + '.' + ext
@@ -117,7 +121,7 @@ def main(argv):
 
         cols = ','.join([str(i) for i in df1.columns.tolist()])
         bar = Bar('Progress', max=dfcount)
-        
+
         for i, r in df1.iterrows():
             sql = 'INSERT INTO raw_tse_consult_candidates (' + cols + ') VALUES (' + '%s,' * (
                 len(r) - 1) + '%s)'
@@ -126,6 +130,7 @@ def main(argv):
         cnx.commit()
         bar.finish()
 
+    toc()
     cur.close()
     cnx.close()
 

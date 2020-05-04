@@ -9,6 +9,8 @@ DATABASE = {
     'raise_on_warnings': True
 }
 
+TIC_TIME_START = 0
+
 STATES = [
     'AC',
     'AL',
@@ -538,3 +540,21 @@ def standardize_df_votes_party(df, year):
     ]]
 
     return df
+
+def tic():
+    import time
+    TIC_TIME_START = time.time()
+
+def toc():
+    import time
+    end = time.time()
+    tmp = (end - TIC_TIME_START)
+    hours = (tmp // 3600)
+    tmp = (tmp - 3600 * hours)
+    minutes = (tmp // 60)
+    seconds = (tmp - 60 * minutes)
+    s = 'secounds' if seconds > 0 else s
+    s = 'minutes' if minutes > 0 else s
+    s = 'hours' if hours > 0 else s
+    m = (': > Elapsed time is %d:%d:%d {}.' % (hours, minutes, seconds)).format(s)
+    print('%s\n' % m)

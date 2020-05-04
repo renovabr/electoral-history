@@ -12,11 +12,13 @@ from utils import *
 
 def main(argv):
     global STATES
-    year, path, ext, state = (None, None, None, None)    
+    year, path, ext, state = (None, None, None, None)
     usage = '03-votacao-partido-munzona.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
-        opts, args = getopt.getopt(argv, 'hy:p:e:s:', ['year=', 'path=', 'ext=', 'state='])
+        opts, args = getopt.getopt(
+            argv, 'hy:p:e:s:', [
+                'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
         print(usage)
         sys.exit(2)

@@ -16,7 +16,9 @@ def main(argv):
     usage = '02-votacao-candidato-munzona.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
-        opts, args = getopt.getopt(argv, 'hy:p:e:s:', ['year=', 'path=', 'ext=', 'state='])
+        opts, args = getopt.getopt(
+            argv, 'hy:p:e:s:', [
+                'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
         print(usage)
         sys.exit(2)
