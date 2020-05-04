@@ -1,19 +1,19 @@
 --
 -- Create database
 --
-CREATE DATABASE IF NOT EXISTS `electoral_history_v1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `electoral_history` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 --
 -- Create the user who owns the database
 --
 CREATE USER IF NOT EXISTS 'winston'@'localhost' IDENTIFIED BY 'cj#hCx0@R3$@gm';
-GRANT ALL PRIVILEGES ON `electoral_history_v1`.* TO 'winston'@'localhost';
+GRANT ALL PRIVILEGES ON `electoral_history`.* TO 'winston'@'localhost';
 FLUSH PRIVILEGES;
 
 --
 -- Set database
 --
-USE `electoral_history_v1`;
+USE `electoral_history`;
 
 --
 -- 01 - Table used by script (consulta_cand_xxxx)

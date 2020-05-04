@@ -1,8 +1,8 @@
 import pandas as pd
 
 DATABASE = {
-    'user': 'root',
-    'password': 'LordVader045#',
+    'user': 'winston',
+    'password': 'cj#hCx0@R3$@gm',
     'host': 'localhost',
     'database': 'electoral_history',
     'port': '3307',

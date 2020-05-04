@@ -13,7 +13,7 @@ from utils import *
 def main(argv):
     global STATES
     year, path, ext, state = (None, None, None, None)
-    usage = '01-tse-consulta-cand.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
+    usage = '01-consulta-cand.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
         opts, args = getopt.getopt(

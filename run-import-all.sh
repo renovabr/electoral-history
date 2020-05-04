@@ -21,22 +21,21 @@ function run_raw_data() {
 }
 
 # run_raw_data "01-tse-consulta-cand.py" "consulta_cand_" &&
-run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_" &&
+# run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_" &&
 # run_raw_data "03-votacao-partido-munzona.py" "votacao_partido_munzona_" &&
 
 if [ $# -gt 0 ]; then
-  if [ "${1}" == "tse-consulta-cand" ]; then
+  if [ "${1}" == "consulta-cand" ]; then
     run_raw_data "01-consulta-cand.py" "consulta_cand_"
-  elif [ "${1}" == "2" ]
+  elif [ "${1}" == "votacao-candidato" ]
   	run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_"
-  elif [ "${1}" == "3" ]
+  elif [ "${1}" == "votacao-partido" ]
     run_raw_data "03-votacao-partido-munzona.py" "votacao_partido_munzona_"
   else
-    echo "YEAR is not valid ${1}"
+    echo "Argument is not valid ${1}"
   fi
 else
-  echo "Add argument YEAR eg: 2010 2012 2014 2016 2018"
+  echo "Add argument table import: consulta-cand | votacao-candidato | votacao-partido"
 fi
-
 
 exit 0
