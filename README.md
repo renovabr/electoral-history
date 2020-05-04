@@ -79,7 +79,5 @@ The data is downloaded in the project folder at: *data/tse/YEAR*
 
 ### Authors
 
-Darlan Dal-Bianco <darlan@renovabr.org>
-Ederson Corbari <ederson@renovabr.org>
-
-[Ederson Corbari](mailto:ederson@renovabr.org)
+  * [Darlan Dal-Bianco <darlan at renovabr.org>](mailto:darlan@renovabr.org)
+  * [Ederson Corbari <ederson at renovabr.org>](mailto:ederson@renovabr.org)
