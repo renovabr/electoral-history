@@ -1,3 +1,5 @@
+<img src="doc/img/brazil-vector.png" align="right" width="180" height="180"/>
+
 # Brazilian Electoral History
 
 <p align="center"> 
@@ -5,6 +7,13 @@
 <img border="0" alt="RenovaBR Foundation" src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/renovabr.png">
 </a>
 </p>
+
+
+# Awesome README [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome#readme)
+> A curated list of awesome READMEs
+
+Elements in beautiful READMEs include, but are not limited to: images, screenshots, GIFs, text formatting, etc.
+
 
 [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **23.271.685** million lines in the database.
 
@@ -77,4 +86,5 @@ The data is downloaded in the project folder at: *data/tse/YEAR*
 
 ### Authors
 
-
+Darlan Dal-Bianco <darlan@renovabr.org>
+Ederson Corbari <ederson@renovabr.org>
