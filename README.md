@@ -6,7 +6,7 @@
 </a>
 </p>
 
-[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database. Electoral years available: *2010, 2012, 2014, 2016, 2018*.
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **23.271.685** million lines in the database.
 
 ## Synopsis
 
@@ -21,11 +21,11 @@ This project uses the following technologies:
   * Python
   * MySQL
 
-
 <p align="center"> 
 <img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/python-mysql.png">
 </p>
 
+### Quick start
 
 Importation and standardization of the Electoral History of the Brazilian TSE
 
