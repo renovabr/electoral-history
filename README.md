@@ -25,7 +25,34 @@ This project uses the following technologies:
 <img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/python-mysql.png">
 </p>
 
-### Quick start
+Three tables are created in the database called (*electoral_history*) to store the data. Are they:
+
+| Table  | Description | 
+| ------ | ----------------------------------------------------  | 
+| raw_tse_consult_candidates | Contains all candidates.          |
+| raw_tse_voting_cand_city   | Contains candidate votes by city. |
+| raw_tse_voting_party_city  | Contains party votes by city.     |
+
+>Note: All tables are partitioned by the election year.
+
+### Requeriments
+
+You must have it installed on your workstation:
+
+  * [MySQL 8 or higher](https://www.mysql.com/downloads/)
+  * [Python 3 or higher](https://www.python.org/downloads/)
+  * [Virtualenv](https://pypi.org/project/virtualenv/)
+  
+And preferably use a **GNU Linux** distribution.
+
+#### 1. Get the code
+
+Now run the commands below to compile the project:
+
+```shell
+$ git clone https://github.com/edersoncorbari/blood-donation.git
+$ cd blood-donation/web-scraping
+```
 
 Importation and standardization of the Electoral History of the Brazilian TSE
 
@@ -38,4 +65,7 @@ The script below downloads the TSE raw data.
 for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
 
 The data is downloaded in the project folder at: *data/tse/YEAR*
+
+### Authors
+
 
