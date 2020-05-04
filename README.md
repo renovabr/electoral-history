@@ -47,7 +47,7 @@ You must have it installed on your workstation:
   
 And preferably use a **GNU Linux** distribution.
 
-#### 1. Get the code
+#### 1. Get the code and data
 
 Now run the commands below to compile the project:
 
@@ -77,6 +77,20 @@ $ for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
 
 Wait for the data to download! The data is downloaded in the project folder at: *data/tse/YEAR*
 
+#### 2. Set MySQL database 
+
+Access the database with user **root** check if everything is working.
+
+```shell
+$ mysql -u root -p
+```
+
+Then run the *sql/schema.sql* that is within the project.
+
+```shell
+$ mysql -u root -p < sql/schema.sql
+```
+A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*.
 
 ### Authors
 
