@@ -56,26 +56,27 @@ $ git clone https://github.com/renovabr/electoral-history.git
 $ cd electoral-history
 ```
 
-Enter pipenv at the root of the *electoral-history* folder for the tests:
+Enter **pipenv** at the root of the *electoral-history* folder for the tests:
 
 ```shell
 $ pipenv shell
 $ pipenv install
 ```
 
+The **tse-data.sh** script downloads the raw data using the year as a parameter. Example to download the year 2010:
 
------------------------------------------------------------
-Importation and standardization of the Electoral History of the Brazilian TSE
+```shell
+$ ./tse-data.sh 2010
+```
 
-Available years are: *2010, 2012, 2014, 2016, 2018*
+You can also download them all using the command:
 
-The script below downloads the TSE raw data. 
+```shell
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
+```
 
-1. ./tse-data.sh 2010
+Wait for the data to download! The data is downloaded in the project folder at: *data/tse/YEAR*
 
-for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
-
-The data is downloaded in the project folder at: *data/tse/YEAR*
 
 ### Authors
 
