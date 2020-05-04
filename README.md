@@ -80,5 +80,5 @@ Wait for the data to download! The data is downloaded in the project folder at: 
 
 ### Authors
 
-  * [Darlan Dal-Bianco <darlan at renovabr.org>](mailto:darlan@renovabr.org)
-  * [Ederson Corbari <ederson at renovabr.org>](mailto:ederson@renovabr.org)
+  * [Darlan Dal-Bianco](mailto:darlan@renovabr.org)
+  * [Ederson Corbari](mailto:ederson@renovabr.org)
