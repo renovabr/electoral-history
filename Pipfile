@@ -7,7 +7,6 @@ name = "pypi"
 mysql-connector = "==2.2.9"
 pandas = "==0.25.1"
 xlrd = "==1.2.0"
-# unidecode = "==1.1.1"
 progress = "==1.5"
 autopep8 = "==1.4.4"
 
