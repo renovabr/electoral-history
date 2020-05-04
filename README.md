@@ -50,10 +50,19 @@ And preferably use a **GNU Linux** distribution.
 Now run the commands below to compile the project:
 
 ```shell
-$ git clone https://github.com/edersoncorbari/blood-donation.git
-$ cd blood-donation/web-scraping
+$ git clone https://github.com/renovabr/electoral-history.git
+$ cd electoral-history
 ```
 
+Enter pipenv at the root of the *electoral-history* folder for the tests:
+
+```shell
+$ pipenv shell
+$ pipenv install
+```
+
+
+-----------------------------------------------------------
 Importation and standardization of the Electoral History of the Brazilian TSE
 
 Available years are: *2010, 2012, 2014, 2016, 2018*
