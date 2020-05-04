@@ -6,11 +6,18 @@
 </a>
 </p>
 
-[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database.
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database. Electoral years available: *2010, 2012, 2014, 2016, 2018*.
 
 ## Synopsis
 
-This is a raw data processing (ETL) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by TSE on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
+This is a raw data processing ([ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by **TSE** on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
+
+### Architecture
+
+This project uses the following technologies:
+
+  * Python
+  * MySQL
 
 Importation and standardization of the Electoral History of the Brazilian TSE
 
