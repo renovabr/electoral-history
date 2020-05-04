@@ -2,7 +2,7 @@ import pandas as pd
 
 DATABASE = {
     'user': 'root',
-    'password': '',
+    'password': 'LordVader045#',
     'host': 'localhost',
     'database': 'electoral_history',
     'port': '3307',

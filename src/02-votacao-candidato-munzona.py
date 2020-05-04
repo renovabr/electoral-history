@@ -59,6 +59,8 @@ def main(argv):
     cur = cnx.cursor(buffered=True)
     dfcount = 0
 
+    tic()
+
     for st in STATES:
         votes = path + 'votacao_candidato_munzona_' + year + '_' + st + '.' + ext
 
@@ -125,6 +127,7 @@ def main(argv):
         cnx.commit()
         bar.finish()
 
+    toc()
     cur.close()
     cnx.close()
 
