@@ -12,12 +12,20 @@
 
 This is a raw data processing ([ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by **TSE** on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
 
+The process of importing the data into an SQL database aims to facilitate the development of other systems as well as for statistical analysis.
+
 ### Architecture
 
 This project uses the following technologies:
 
   * Python
   * MySQL
+
+
+<p align="center"> 
+<img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/python-mysql.png">
+</p>
+
 
 Importation and standardization of the Electoral History of the Brazilian TSE
 
