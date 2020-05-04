@@ -6,9 +6,7 @@
 </a>
 </p>
 
-This is a raw data processing (ETL) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by TSE on the website xxx.com.
-
-http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais
+This is a raw data processing (ETL) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by TSE on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
 
 Importation and standardization of the Electoral History of the Brazilian TSE
 
