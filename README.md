@@ -1,8 +1,8 @@
 # Brazilian Electoral History
 
 <p align="center"> 
-<a href="http://www.prosangue.sp.gov.br">
-<img border="0" alt="Pró-Sangue Foundation" src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/renovabr.png">
+<a href="https://www.renovabr.org">
+<img border="0" alt="RenovaBR Foundation" src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/renovabr.png">
 </a>
 </p>
 
