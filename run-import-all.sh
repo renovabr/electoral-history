@@ -20,10 +20,6 @@ function run_raw_data() {
   cd -
 }
 
-# run_raw_data "01-tse-consulta-cand.py" "consulta_cand_" &&
-# run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_" &&
-# run_raw_data "03-votacao-partido-munzona.py" "votacao_partido_munzona_" &&
-
 if [ $# -gt 0 ]; then
   if [ "${1}" == "consulta-cand" ]; then
     run_raw_data "01-consulta-cand.py" "consulta_cand_"
