@@ -288,6 +288,40 @@ ORDER BY
 | 250000617766 | PROF. CLAUDIO FERNANDO | Governador | 28.666    |
 | 250000609174 | TONINHO FERREIRA       | Governador | 16.202    |
 
+Which top 10 city has the most votes for a distinguished candidate example the candidate (250000612596) to governor of the state of São Paulo.
+
+```sql
+SELECT
+  nm_city as city,
+  sum(qt_votes_nominal) as votes 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2018' 
+  AND sg_uf = 'SP' 
+  AND nr_shift = 2 
+  AND cd_position = 3 
+  AND sq_candidate = 250000612596 
+GROUP BY
+  1 
+ORDER BY
+  2 DESC LIMIT 10;
+```
+
+| City                     | Votes | 
+| ---------------------- |---------|
+| SÃO PAULO              | 2447309 |
+| CAMPINAS               |  315524 |
+| GUARULHOS              |  240825 |
+| SÃO JOSÉ DOS CAMPOS    |  232775 |
+| SOROCABA               |  207470 |
+| SANTO ANDRÉ            |  202125 |
+| SÃO BERNARDO DO CAMPO  |  196202 |
+| OSASCO                 |  176109 |
+| RIBEIRÃO PRETO         |  166728 |
+| JUNDIAÍ                |  143028 |
+
+
 ### Authors
 
   * [Darlan Dal-Bianco](mailto:darlan@renovabr.org)
