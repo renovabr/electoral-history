@@ -91,7 +91,7 @@ Then run the *sql/schema.sql* that is within the project.
 $ mysql -u root -p < sql/schema.sql
 ```
 
-A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*.
+A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*. The database connection settings can be changed in the *src/utils.py* file.
 
 #### 3. Import all data to MySQL 
 
