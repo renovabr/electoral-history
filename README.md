@@ -105,7 +105,8 @@ If you want to import a specific year and state you can use the command:
 
 ```shell
 $ cd src
-$ ./01-consulta-cand.py -y 2010 -s 'SP' -p ../data/tse/2010/consulta_cand_2010/ -e txt
+$ ./01-consulta-cand.py -y 2010 -s 'SP' \
+  -p ../data/tse/2010/consulta_cand_2010/ -e txt
 ```
 
 The same procedure applies to the other tables. To import all candidates voting data, use the command:
@@ -118,7 +119,8 @@ If you want to import a specific year and state you can use the command:
 
 ```shell
 $ cd src
-$ ./02-votacao-candidato-munzona.py -y 2010 -s 'SP' -p ../data/tse/2010/votacao_candidato_munzona_2010/ -e txt
+$ ./02-votacao-candidato-munzona.py -y 2010 -s 'SP' -p \
+  ../data/tse/2010/votacao_candidato_munzona_2010/ -e txt
 ```
 
 For the import of votes by party:
@@ -131,7 +133,8 @@ If you want to import a specific year and state you can use the command:
 
 ```shell
 $ cd src
-$ ./03-votacao-partido-munzona.py -y 2010 -s SC -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
+$ ./03-votacao-partido-munzona.py -y 2010 -s SC \
+  -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
 ```
 
 
