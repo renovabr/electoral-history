@@ -23,9 +23,9 @@ function run_raw_data() {
 if [ $# -gt 0 ]; then
   if [ "${1}" == "consulta-cand" ]; then
     run_raw_data "01-consulta-cand.py" "consulta_cand_"
-  elif [ "${1}" == "votacao-candidato" ]
+  elif [ "${1}" == "votacao-candidato" ]; then
   	run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_"
-  elif [ "${1}" == "votacao-partido" ]
+  elif [ "${1}" == "votacao-partido" ]; then
     run_raw_data "03-votacao-partido-munzona.py" "votacao_partido_munzona_"
   else
     echo "Argument is not valid ${1}"
