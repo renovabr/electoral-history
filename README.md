@@ -184,7 +184,7 @@ ORDER BY
 | Governador         |
 | Senador            |
 
-Checking the total number of votes (2018) of the Governors of the city of *Florianópolis-SC*.
+Checking the total number of votes of the Governors of the state of Santa Catarina in the city of *Florianópolis* in the first shift of the 2018 elections.
 
 ```sql
 SELECT
