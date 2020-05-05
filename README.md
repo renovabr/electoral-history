@@ -90,7 +90,20 @@ Then run the *sql/schema.sql* that is within the project.
 ```shell
 $ mysql -u root -p < sql/schema.sql
 ```
+
 A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*.
+
+#### 3. Import all data to MySQL 
+
+To import the complete data you can run the script **run-import-all.sh**.
+
+```shell
+$ ./run-import-all.sh "consulta-cand"
+```
+
+This command will import all candidate data into table (**raw_tse_consult_candidates**). 
+
+
 
 ### Authors
 
