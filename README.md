@@ -220,6 +220,30 @@ ORDER BY
 | 240000610038 | INGRID ASSIS       | Governador | FLORIANÓPOLIS  |   1644 |
 | 240000614244 | JESSE PEREIRA      | Governador | FLORIANÓPOLIS  |   1281 |
 
+Checking the total number of votes (2018) of the Governors of the city of *São Paulo-SP*.
+
+```sql
+SELECT
+  sq_candidate AS sq,
+  nm_ballot_candidate AS name,
+  ds_position AS position,
+  nm_city AS city,
+  sum(qt_votes_nominal) AS votes 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2018' 
+  AND sg_uf = 'SP' 
+  AND cd_city = 71072 
+  AND cd_position = 3 
+GROUP BY
+  1,
+  2,
+  3,
+  4 
+ORDER BY
+  5 DESC;
+```
 
 ### Authors
 
