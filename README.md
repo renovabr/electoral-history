@@ -244,6 +244,18 @@ GROUP BY
 ORDER BY
   5 DESC;
 ```
+| SQ           | Name                   | Position   | City       | Votes  | 
+| 250000615141 | MARCIO FRANÇA          | Governador | SÃO PAULO  | 4622208 |
+| 250000612596 | JOÃO DORIA             | Governador | SÃO PAULO  | 3908145 |
+| 250000604077 | PAULO SKAF             | Governador | SÃO PAULO  | 1220740 |
+| 250000623884 | LUIZ MARINHO           | Governador | SÃO PAULO  |  901063 |
+| 250000601939 | ROGERIO CHEQUER        | Governador | SÃO PAULO  |  257403 |
+| 250000601522 | PROFESSORA LISETE      | Governador | SÃO PAULO  |  198058 |
+| 250000615464 | RODRIGO TAVARES        | Governador | SÃO PAULO  |  135431 |
+| 250000612133 | MAJOR COSTA E SILVA    | Governador | SÃO PAULO  |  131437 |
+| 250000617766 | PROF. CLAUDIO FERNANDO | Governador | SÃO PAULO  |    7546 |
+| 250000609174 | TONINHO FERREIRA       | Governador | SÃO PAULO  |    5104 |
+
 
 ### Authors
 
