@@ -156,7 +156,7 @@ ORDER BY
   1;
 ```
 
-| Result   |
+| 2016     |
 | -------- | 
 | Prefeito |
 | Vereador |
@@ -176,7 +176,7 @@ ORDER BY
   1;
 ```
 
-| Result   |
+| 2018     |
 | -------- | 
 | Deputado Distrital |
 | Deputado Estadual  |
