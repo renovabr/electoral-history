@@ -1,3 +1,5 @@
+<img src="doc/img/brazil-vector.png" align="right" width="180" height="180"/>
+
 # Brazilian Electoral History
 
 <p align="center"> 
@@ -45,7 +47,7 @@ You must have it installed on your workstation:
   
 And preferably use a **GNU Linux** distribution.
 
-#### 1. Get the code
+#### 1. Get the code and data
 
 Now run the commands below to compile the project:
 
@@ -54,27 +56,56 @@ $ git clone https://github.com/renovabr/electoral-history.git
 $ cd electoral-history
 ```
 
-Enter pipenv at the root of the *electoral-history* folder for the tests:
+Enter **pipenv** at the root of the *electoral-history* folder for the tests:
 
 ```shell
 $ pipenv shell
 $ pipenv install
 ```
 
+The **tse-data.sh** script downloads the raw data using the year as a parameter. Example to download the year 2010:
 
------------------------------------------------------------
-Importation and standardization of the Electoral History of the Brazilian TSE
+```shell
+$ ./tse-data.sh 2010
+```
 
-Available years are: *2010, 2012, 2014, 2016, 2018*
+You can also download them all using the command:
 
-The script below downloads the TSE raw data. 
+```shell
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
+```
 
-1. ./tse-data.sh 2010
+Wait for the data to download! The data is downloaded in the project folder at: *data/tse/YEAR*
 
-for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
+#### 2. Set MySQL database 
 
-The data is downloaded in the project folder at: *data/tse/YEAR*
+Access the database with user **root** check if everything is working.
+
+```shell
+$ mysql -u root -p
+```
+
+Then run the *sql/schema.sql* that is within the project.
+
+```shell
+$ mysql -u root -p < sql/schema.sql
+```
+
+A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*.
+
+#### 3. Import all data to MySQL 
+
+To import the complete data you can run the script **run-import-all.sh**.
+
+```shell
+$ ./run-import-all.sh "consulta-cand"
+```
+
+This command will import all candidate data into table (**raw_tse_consult_candidates**). 
+
+
 
 ### Authors
 
-
+  * [Darlan Dal-Bianco](mailto:darlan@renovabr.org)
+  * [Ederson Corbari](mailto:ederson@renovabr.org)
