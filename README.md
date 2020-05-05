@@ -144,7 +144,16 @@ There is a data dictionary that can be downloaded here: [Dictionary](doc/diction
 Checking positions in the *2016* election:
 
 ```sql
-SELECT ds_position FROM raw_tse_voting_cand_city WHERE election_year = '2016' GROUP BY 1 ORDER BY 1;
+SELECT
+  ds_position 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2016' 
+GROUP BY
+  1 
+ORDER BY
+  1;
 ```
 
 | Result   |
@@ -155,7 +164,16 @@ SELECT ds_position FROM raw_tse_voting_cand_city WHERE election_year = '2016' GR
 Checking positions in the *2018* election:
 
 ```sql
-SELECT ds_position FROM raw_tse_voting_cand_city WHERE election_year = '2018' GROUP BY 1 ORDER BY 1;
+SELECT
+  ds_position 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2018' 
+GROUP BY
+  1 
+ORDER BY
+  1;
 ```
 
 | Result   |
