@@ -192,13 +192,14 @@ SELECT
   nm_ballot_candidate AS name,
   ds_position AS position,
   nm_city AS city,
-  sum(qt_votes_nominal) AS votes 
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
   election_year = '2018' 
   AND sg_uf = 'SC' 
   AND cd_city = 81051 
+  AND nr_shift = 1 
   AND cd_position = 3 
 GROUP BY
   1,
@@ -206,19 +207,19 @@ GROUP BY
   3,
   4 
 ORDER BY
-  5 DESC;
+  sum(qt_votes_nominal) DESC;
 ```
 
 | SQ           | Name               | Position   | City           | Votes  | 
 | ------------ |--------------------|------------|----------------|--------| 
-| 240000609724 | COMANDANTE MOISÉS  | Governador | FLORIANÓPOLIS  | 236074 |
-| 240000621321 | GELSON MERÍSIO     | Governador | FLORIANÓPOLIS  | 139731 |
-| 240000609537 | MAURO MARIANI      | Governador | FLORIANÓPOLIS  |  43796 |
-| 240000624336 | DÉCIO LIMA         | Governador | FLORIANÓPOLIS  |  39144 |
-| 240000601841 | CAMASÃO            | Governador | FLORIANÓPOLIS  |  19362 |
-| 240000616318 | PORTANOVA          | Governador | FLORIANÓPOLIS  |   4844 |
-| 240000610038 | INGRID ASSIS       | Governador | FLORIANÓPOLIS  |   1644 |
-| 240000614244 | JESSE PEREIRA      | Governador | FLORIANÓPOLIS  |   1281 |
+| 240000609724 | COMANDANTE MOISÉS  | Governador | FLORIANÓPOLIS  | 73.947 |
+| 240000621321 | GELSON MERÍSIO     | Governador | FLORIANÓPOLIS  | 59.524 |
+| 240000609537 | MAURO MARIANI      | Governador | FLORIANÓPOLIS  | 43.796 |
+| 240000624336 | DÉCIO LIMA         | Governador | FLORIANÓPOLIS  | 39.144 |
+| 240000601841 | CAMASÃO            | Governador | FLORIANÓPOLIS  | 19.362 |
+| 240000616318 | PORTANOVA          | Governador | FLORIANÓPOLIS  | 4.844  |
+| 240000610038 | INGRID ASSIS       | Governador | FLORIANÓPOLIS  | 1.644  |
+| 240000614244 | JESSE PEREIRA      | Governador | FLORIANÓPOLIS  | 1.281  |
 
 Checking the total number of votes of the Governors of the State of *São Paulo* in the first shift of the 
 2018 elections.
