@@ -137,6 +137,9 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s SC \
   -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
 ```
 
+#### 3.Checking and analyzing data 
+
+There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx)
 
 
 ### Authors
