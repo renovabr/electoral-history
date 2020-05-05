@@ -184,6 +184,8 @@ ORDER BY
 | Governador         |
 | Senador            |
 
+Checking the total number of votes (2018) of the Governors of the city of *Florianópolis-SC*.
+
 ```sql
 SELECT
   sq_candidate AS sq,
