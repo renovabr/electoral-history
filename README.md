@@ -244,7 +244,9 @@ GROUP BY
 ORDER BY
   5 DESC;
 ```
-| SQ           | Name                   | Position   | City       | Votes  | 
+
+| SQ           | Name                   | Position   | City       | Votes   | 
+| ------------ |------------------------|------------|------------|---------| 
 | 250000615141 | MARCIO FRANÇA          | Governador | SÃO PAULO  | 4622208 |
 | 250000612596 | JOÃO DORIA             | Governador | SÃO PAULO  | 3908145 |
 | 250000604077 | PAULO SKAF             | Governador | SÃO PAULO  | 1220740 |
