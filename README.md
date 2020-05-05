@@ -220,43 +220,42 @@ ORDER BY
 | 240000610038 | INGRID ASSIS       | Governador | FLORIANÓPOLIS  |   1644 |
 | 240000614244 | JESSE PEREIRA      | Governador | FLORIANÓPOLIS  |   1281 |
 
-Checking the total number of votes (2018) of the Governors of the city of *São Paulo-SP*.
+Checking the total number of votes (2018) of the Governors of the state of *São Paulo*.
 
 ```sql
 SELECT
   sq_candidate AS sq,
   nm_ballot_candidate AS name,
   ds_position AS position,
-  nm_city AS city,
-  sum(qt_votes_nominal) AS votes 
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
   election_year = '2018' 
   AND sg_uf = 'SP' 
-  AND cd_city = 71072 
+  AND nr_shift = 1 
   AND cd_position = 3 
 GROUP BY
   1,
   2,
-  3,
-  4 
+  3 
 ORDER BY
-  5 DESC;
+  sum(qt_votes_nominal) DESC;
 ```
 
-| SQ           | Name                   | Position   | City       | Votes   | 
-| ------------ |------------------------|------------|------------|---------| 
-| 250000615141 | MARCIO FRANÇA          | Governador | SÃO PAULO  | 4622208 |
-| 250000612596 | JOÃO DORIA             | Governador | SÃO PAULO  | 3908145 |
-| 250000604077 | PAULO SKAF             | Governador | SÃO PAULO  | 1220740 |
-| 250000623884 | LUIZ MARINHO           | Governador | SÃO PAULO  |  901063 |
-| 250000601939 | ROGERIO CHEQUER        | Governador | SÃO PAULO  |  257403 |
-| 250000601522 | PROFESSORA LISETE      | Governador | SÃO PAULO  |  198058 |
-| 250000615464 | RODRIGO TAVARES        | Governador | SÃO PAULO  |  135431 |
-| 250000612133 | MAJOR COSTA E SILVA    | Governador | SÃO PAULO  |  131437 |
-| 250000617766 | PROF. CLAUDIO FERNANDO | Governador | SÃO PAULO  |    7546 |
-| 250000609174 | TONINHO FERREIRA       | Governador | SÃO PAULO  |    5104 |
+| SQ           | Name                   | Position   | Votes     | 
+| ------------ |------------------------|------------|-----------| 
+| 250000612596 | JOÃO DORIA             | Governador | 6.431.555 |
+| 250000615141 | MARCIO FRANÇA          | Governador | 4.358.998 |
+| 250000604077 | PAULO SKAF             | Governador | 4.269.865 |
+| 250000623884 | LUIZ MARINHO           | Governador | 2.563.922 |
+| 250000612133 | MAJOR COSTA E SILVA    | Governador | 747.462   |
+| 250000601939 | ROGERIO CHEQUER        | Governador | 673.102   |
+| 250000615464 | RODRIGO TAVARES        | Governador | 649.729   |
+| 250000601522 | PROFESSORA LISETE      | Governador | 507.236   |
+| 250000617766 | PROF. CLAUDIO FERNANDO | Governador | 28.666    |
+| 250000609174 | TONINHO FERREIRA       | Governador | 16.202    |
+
 
 
 ### Authors
