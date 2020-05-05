@@ -221,6 +221,36 @@ ORDER BY
 | 240000610038 | INGRID ASSIS       | Governador | FLORIANÓPOLIS  | 1.644  |
 | 240000614244 | JESSE PEREIRA      | Governador | FLORIANÓPOLIS  | 1.281  |
 
+
+Checking the total number of votes of the Governors of the State of *Santa Catarina* in the second shit of the 2018 elections.
+
+```sql
+SELECT
+  sq_candidate AS sq,
+  nm_ballot_candidate AS name,
+  ds_position AS position,
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2018' 
+  AND sg_uf = 'SC' 
+  AND nr_shift = 2 
+  AND cd_position = 3 
+GROUP BY
+  1,
+  2,
+  3 
+ORDER BY
+  sum(qt_votes_nominal) DESC;
+```  
+
+| SQ           | Name               | Position   | Votes     | 
+| ------------ |--------------------|------------|-----------| 
+| 240000609724 | COMANDANTE MOISÉS  | Governador | 2.644.179 |
+| 240000621321 | GELSON MERÍSIO     | Governador | 1.075.242 |
+
+
 Checking the total number of votes of the Governors of the State of *São Paulo* in the first shift of the 
 2018 elections.
 
@@ -257,8 +287,6 @@ ORDER BY
 | 250000601522 | PROFESSORA LISETE      | Governador | 507.236   |
 | 250000617766 | PROF. CLAUDIO FERNANDO | Governador | 28.666    |
 | 250000609174 | TONINHO FERREIRA       | Governador | 16.202    |
-
-
 
 ### Authors
 
