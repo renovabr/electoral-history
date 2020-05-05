@@ -95,13 +95,44 @@ A database will be created called: *electoral_historal* with three tables and a 
 
 #### 3. Import all data to MySQL 
 
-To import the complete data you can run the script **run-import-all.sh**.
+To import the candidates data for all years, use the script: **run-import-all.sh**.
 
 ```shell
-$ ./run-import-all.sh "consulta-cand"
+$ ./run-import-all.sh 'consulta-cand'
 ```
 
-This command will import all candidate data into table (**raw_tse_consult_candidates**). 
+If you want to import a specific year and state you can use the command:
+
+```shell
+$ cd src
+$ ./01-consulta-cand.py -y 2010 -s 'SP' -p ../data/tse/2010/consulta_cand_2010/ -e txt
+```
+
+The same procedure applies to the other tables. To import all candidates voting data, use the command:
+
+```shell
+$ ./run-import-all.sh 'votacao-candidato'
+```
+
+If you want to import a specific year and state you can use the command:
+
+```shell
+$ cd src
+$ ./02-votacao-candidato-munzona.py -y 2010 -s 'SP' -p ../data/tse/2010/votacao_candidato_munzona_2010/ -e txt
+```
+
+For the import of votes by party:
+
+```shell
+$ ./run-import-all.sh 'votacao-partido'
+```
+
+If you want to import a specific year and state you can use the command:
+
+```shell
+$ cd src
+$ ./03-votacao-partido-munzona.py -y 2010 -s SC -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
+```
 
 
 
