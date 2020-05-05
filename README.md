@@ -139,7 +139,9 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s SC \
 
 #### 3.Checking and analyzing data 
 
-There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx). Checking positions in the *2016* election:
+There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx). 
+
+Checking positions in the *2016* election:
 
 ```sql
 SELECT ds_position FROM raw_tse_voting_party_city WHERE election_year = '2016' GROUP BY 1 ORDER BY 1;
@@ -149,6 +151,20 @@ SELECT ds_position FROM raw_tse_voting_party_city WHERE election_year = '2016' G
 | -------- | 
 | Prefeito |
 | Vereador |
+
+Checking positions in the *2018* election:
+
+```sql
+SELECT ds_position FROM raw_tse_voting_party_city WHERE election_year = '2018' GROUP BY 1 ORDER BY 1;
+```
+
+| Result   |
+| -------- | 
+| Deputado Distrital |
+| Deputado Estadual  |
+| Deputado Federal   |
+| Governador         |
+| Senador            |
 
 
 ### Authors
