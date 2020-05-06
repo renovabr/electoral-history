@@ -133,7 +133,7 @@ If you want to import a specific year and state you can use the command:
 
 ```shell
 $ cd src
-$ ./03-votacao-partido-munzona.py -y 2010 -s SC \
+$ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
   -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
 ```
 
