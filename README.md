@@ -141,6 +141,12 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
 
 There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx). 
 
+All tables are partitioned by the year of election.
+
+```sql
+SELECT COUNT(1) FROM raw_tse_consult_candidates PARTITION (p2010);
+```
+
 Checking positions in the *2016* election:
 
 ```sql
