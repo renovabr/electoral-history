@@ -288,7 +288,7 @@ ORDER BY
 | 250000617766 | PROF. CLAUDIO FERNANDO | Governador | 28.666    |
 | 250000609174 | TONINHO FERREIRA       | Governador | 16.202    |
 
-Which top 10 city has the most votes for a distinguished candidate example the candidate (*250000612596*) to governor of the state of São Paulo.
+Which top 10 city has the most votes for a distinguished candidate example the candidate (*250000612596*) to governor of the state of São Paulo, for the second shift.
 
 ```sql
 SELECT
@@ -308,7 +308,7 @@ ORDER BY
   2 DESC LIMIT 10;
 ```
 
-| City                     | Votes | 
+| City                   | Votes   | 
 | ---------------------- |---------|
 | SÃO PAULO              | 2447309 |
 | CAMPINAS               |  315524 |
