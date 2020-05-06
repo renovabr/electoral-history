@@ -321,8 +321,8 @@ ORDER BY
 | RIBEIRÃO PRETO         |  166728 |
 | JUNDIAÍ                |  143028 |
 
-
 ### Authors
 
   * [Darlan Dal-Bianco](mailto:darlan@renovabr.org)
   * [Ederson Corbari](mailto:ederson@renovabr.org)
+  
