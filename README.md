@@ -298,8 +298,8 @@ Which top 10 city has the most votes for a distinguished candidate example the c
 
 ```sql
 SELECT
-  nm_city as city,
-  sum(qt_votes_nominal) as votes 
+  nm_city AS city,
+  sum(qt_votes_nominal) AS votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE

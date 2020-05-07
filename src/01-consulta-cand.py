@@ -59,7 +59,6 @@ def main(argv):
 
     cnx = mysql.connector.connect(**DATABASE)
     cur = cnx.cursor(buffered=True)
-    dfcount = 0
 
     tic()
 
