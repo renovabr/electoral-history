@@ -52,12 +52,12 @@ def main():
     
     df = pd.read_sql("""
       SELECT
-        nm_city,
-        sq_candidate,
-        ds_position,
-        cd_position,
-        ds_situ_tot_shift,
-        qt_votes_nominal 
+        sq_candidate AS SQ_CANDIDATO,
+        ds_position AS DS_CARGO,
+        cd_position AS CD_CARGO,
+        ds_situ_tot_shift AS DS_SIT_TOT_TURNO,
+        qt_votes_nominal AS QT_VOTOS_NOMINAIS,
+        nm_city AS NM_MUNICIPIO
       FROM
         raw_tse_voting_cand_city 
       WHERE
