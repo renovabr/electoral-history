@@ -12,7 +12,7 @@
 
 ## Synopsis
 
-This is a raw data processing ([ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)) project for standardizing information for a MySQL Database. The Brazilian Electoral History data is made available by **TSE** on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
+This is a raw data processing ([ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)) project for standardizing information for a **MySQL** Database. The Brazilian Electoral History data is made available by **TSE** on the website [TSE Electoral Data Repository](http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
 
 The process of importing the data into an SQL database aims to facilitate the development of other systems as well as for statistical analysis.
 
@@ -20,8 +20,8 @@ The process of importing the data into an SQL database aims to facilitate the de
 
 This project uses the following technologies:
 
-  * Python
-  * MySQL
+  * [MySQL](https://www.mysql.com/)
+  * [Python](https://www.python.org/)
 
 <p align="center"> 
 <img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/python-mysql.png">
@@ -91,7 +91,7 @@ Then run the *sql/schema.sql* that is within the project.
 $ mysql -u root -p < sql/schema.sql
 ```
 
-A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*. The database connection settings can be changed in the *src/utils.py* file.
+>Note: A database will be created called: *electoral_historal* with three tables and a user with access to a database called *winston*. The database connection settings can be changed in the *config.ini* file.
 
 #### 3. Import all data to MySQL 
 
