@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 from config import mysql_host, mysql_database, mysql_port
 from config import mysql_user, mysql_password, mysql_raise_on_warnings
@@ -545,12 +546,11 @@ def standardize_df_votes_party(df, year):
 
 
 def tic():
-    import time
     TIC_TIME_START = time.time()
+    print('%s\n' % TIC_TIME_START)
 
 
 def toc():
-    import time
     end = time.time()
     tmp = (end - TIC_TIME_START)
     hours = (tmp // 3600)
