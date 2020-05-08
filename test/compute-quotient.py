@@ -5,51 +5,26 @@ import pandas as pd
 import os.path
 
 from sqlalchemy import create_engine
-conn = 'mysql+mysqlconnector://winston:cj#hCx0@R3$@gm@localhost:3307/electoral_history'
 
+import sys
+sys.path.append('../src') 
+from config import mysql_host, mysql_database, mysql_port
+from config import mysql_user, mysql_password
+
+DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
 
 YEAR = '2016'
-VOTACAO_ZONA_PATH = "/home/edmc/Downloads/2016-original-tse/votacao_candidato_munzona_" + YEAR + "/"
-
-STATES = [
-    "AC",
-    "AL",
-    "AP",
-    "AM",
-    "BA",
-    "CE",
-    # "DF",
-    "ES",
-    "GO",
-    "MA",
-    "MT",
-    "MS",
-    "MG",
-    "PA",
-    "PB",
-    "PR",
-    "PE",
-    "PI",
-    "RJ",
-    "RN",
-    "RS",
-    "RO",
-    "RR",
-    "SC",
-    "SP",
-    "SE",
-    "TO"
-]
-
-"""
-STATES = [
-    "RN",
-]
-"""
+# VOTACAO_ZONA_PATH = "/home/edmc/Downloads/2016-original-tse/votacao_candidato_munzona_" + YEAR + "/"
 
 def main():
-    engine = create_engine(conn, echo=False)
+    engine = create_engine(DATABASE, echo=False)
     
+    states = pd.read_sql("""SELECT sg_uf as states FROM raw_tse_voting_cand_city WHERE election_year = '{}' GROUP BY 1""".format(YEAR), engine)
+
+    print(states)
+
+    raise
+
     df = pd.read_sql("""
       SELECT
         sq_candidate AS SQ_CANDIDATO,
