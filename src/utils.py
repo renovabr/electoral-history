@@ -1,12 +1,14 @@
 import pandas as pd
+from config import mysql_host, mysql_database, mysql_port
+from config import mysql_user, mysql_password, mysql_raise_on_warnings
 
 DATABASE = {
-    'user': 'winston',
-    'password': 'cj#hCx0@R3$@gm',
-    'host': 'localhost',
-    'database': 'electoral_history',
-    'port': '3307',
-    'raise_on_warnings': True
+    'host': mysql_host(),
+    'database': mysql_database(),
+    'port': mysql_port(),
+    'user': mysql_user(),
+    'password': mysql_password(),
+    'raise_on_warnings': mysql_raise_on_warnings()
 }
 
 TIC_TIME_START = 0

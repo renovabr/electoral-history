@@ -7,7 +7,9 @@ import sys
 import getopt
 import mysql.connector
 from progress.bar import Bar
-from utils import *
+from utils import STATES, DATABASE
+from utils import COLS_VOTES_PARTIES, COLS_VOTES_PARTIES_2010_2012
+from utils import standardize_df_votes_party, tic, toc
 
 
 def main(argv):
@@ -16,7 +18,7 @@ def main(argv):
     usage = '03-votacao-partido-munzona.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
-        opts, args = getopt.getopt(
+        opts, _args = getopt.getopt(
             argv, 'hy:p:e:s:', [
                 'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
@@ -57,7 +59,6 @@ def main(argv):
 
     cnx = mysql.connector.connect(**DATABASE)
     cur = cnx.cursor(buffered=True)
-    dfcount = 0
 
     tic()
 
@@ -106,11 +107,12 @@ def main(argv):
         cols = ','.join([str(i) for i in df1.columns.tolist()])
         bar = Bar('Progress', max=dfcount)
 
-        for i, r in df1.iterrows():
+        for _i, r in df1.iterrows():
             sql = 'INSERT INTO raw_tse_voting_party_city (' + \
                 cols + ') VALUES (' + '%s,' * (len(r) - 1) + '%s)'
             cur.execute(sql, tuple(r))
             bar.next()
+        print('Committing the data. Wait...')
         cnx.commit()
         bar.finish()
 

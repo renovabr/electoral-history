@@ -18,7 +18,7 @@ def main(argv):
     usage = '01-consulta-cand.py -y 2014 -p /tmp/tse/2014/ -e csv or txt'
 
     try:
-        opts = getopt.getopt(
+        opts, _args = getopt.getopt(
             argv, 'hy:p:e:s:', [
                 'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
@@ -128,6 +128,7 @@ def main(argv):
                 len(r) - 1) + '%s)'
             cur.execute(sql, tuple(r))
             bar.next()
+        print('Committing the data. Wait...')
         cnx.commit()
         bar.finish()
 
