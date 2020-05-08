@@ -126,7 +126,7 @@ def main(argv):
             cur.execute(sql, tuple(r))
             bar.next()
         bar.finish()
-        print('Committing the data. Wait...')
+        print('Committing the data. Wait...\n')
         cnx.commit()
 
     toc()
