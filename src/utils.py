@@ -557,6 +557,7 @@ def toc():
     tmp = (tmp - 3600 * hours)
     minutes = (tmp // 60)
     seconds = (tmp - 60 * minutes)
+    s = None
     s = 'secounds' if seconds > 0 else s
     s = 'minutes' if minutes > 0 else s
     s = 'hours' if hours > 0 else s
