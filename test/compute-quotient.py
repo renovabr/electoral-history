@@ -1,120 +1,84 @@
 #!/usr/bin/env python3
 
+import sys
+sys.path.append('../src')
+from config import mysql_user, mysql_password
+from config import mysql_host, mysql_database, mysql_port
+from sqlalchemy import create_engine
 import numpy as np
 import pandas as pd
 import os.path
 
-from sqlalchemy import create_engine
 
-import sys
-sys.path.append('../src') 
-from config import mysql_host, mysql_database, mysql_port
-from config import mysql_user, mysql_password
-
-DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
-
+DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + \
+    '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
 YEAR = '2016'
-# VOTACAO_ZONA_PATH = "/home/edmc/Downloads/2016-original-tse/votacao_candidato_munzona_" + YEAR + "/"
+
 
 def main():
     engine = create_engine(DATABASE, echo=False)
-    
-    states = pd.read_sql("""SELECT sg_uf as states FROM raw_tse_voting_cand_city WHERE election_year = '{}' GROUP BY 1""".format(YEAR), engine)
 
-    print(states)
+    print('Read states. Wait...')
+    states = pd.read_sql(
+        """SELECT sg_uf AS STATES FROM raw_tse_voting_cand_city WHERE election_year = '{}' GROUP BY 1""".format(YEAR),
+        engine)
+        
+    output = 'result-quotient-' + YEAR + '.csv'
 
-    raise
+    for st in states['STATES'].to_list():
+        print('Read votes: ' + st)
 
-    df = pd.read_sql("""
-      SELECT
-        sq_candidate AS SQ_CANDIDATO,
-        ds_position AS DS_CARGO,
-        cd_position AS CD_CARGO,
-        ds_situ_tot_shift AS DS_SIT_TOT_TURNO,
-        qt_votes_nominal AS QT_VOTOS_NOMINAIS,
-        nm_city AS NM_MUNICIPIO
-      FROM
-        raw_tse_voting_cand_city 
-      WHERE
-        election_year = '2016' 
-        AND sg_uf = 'AC' 
-        AND cd_position = 13""", engine)
-
-    print(df)
-
-
-    raise 'Final'
-
-
-    """
-    for i in STATES:
-        # canditates = CANDIDATURA_PATH + "consulta_cand_" + YEAR + "_" + i + ".csv"
-        votes = VOTACAO_ZONA_PATH + "votacao_candidato_munzona_" + YEAR + "_" + i + ".csv"
-
-        print('Read votes: ' + votes)
-        df0 = pd.read_csv(votes, sep=";", encoding = "ISO-8859-1")
-        df0 = df0.replace(np.nan, '', regex=True)
-        df0 = df0[['SQ_CANDIDATO', 'DS_CARGO', 'CD_CARGO', 'DS_SIT_TOT_TURNO', 'QT_VOTOS_NOMINAIS', 'NM_MUNICIPIO', 'DS_SIT_TOT_TURNO']]
-
+        df0 = pd.read_sql("""
+          SELECT
+            sq_candidate AS SQ_CANDIDATO,
+            ds_position AS DS_CARGO,
+            cd_position AS CD_CARGO,
+            ds_situ_tot_shift AS DS_SIT_TOT_TURNO,
+            qt_votes_nominal AS QT_VOTOS_NOMINAIS,
+            nm_city AS NM_MUNICIPIO
+          FROM
+            raw_tse_voting_cand_city
+          WHERE
+            election_year = '{}'
+            AND sg_uf = '{}'""".format(YEAR, st), engine)
 
         city = df0.groupby(['NM_MUNICIPIO'])
-
         data = []
 
         for name, group in city:
-            print(name)
+            df1 = group.query(
+                "CD_CARGO == 13 and NM_MUNICIPIO == '" +
+                name +
+                "'").sort_values(
+                by=['QT_VOTOS_NOMINAIS'],
+                inplace=False,
+                ascending=False)
 
-            df1 = group.query("CD_CARGO == 13 and NM_MUNICIPIO == '" + name + "'").sort_values(by=['QT_VOTOS_NOMINAIS'], inplace=False, ascending=False)
+            sigma1 = df1['QT_VOTOS_NOMINAIS'].sum()
+            elected = df1.query(
+                "DS_SIT_TOT_TURNO != 'SUPLENTE' and DS_SIT_TOT_TURNO != 'NÃO ELEITO' and DS_SIT_TOT_TURNO != '2º TURNO'")
 
-            sigma = df1['QT_VOTOS_NOMINAIS'].sum()
+            sigma2 = elected.groupby(['SQ_CANDIDATO']).sum()
+            sigma2 = sigma2['QT_VOTOS_NOMINAIS'].count()
 
-            elected = df1.query("DS_SIT_TOT_TURNO != 'SUPLENTE' and DS_SIT_TOT_TURNO != 'NÃO ELEITO' and DS_SIT_TOT_TURNO != '2º TURNO'")
+            x = (sigma1 / sigma2)
+            q = np.ceil(x)
 
-            elected2 = elected.groupby(['SQ_CANDIDATO']).sum()
-            df2 = elected2.sort_values(
-                        by=['QT_VOTOS_NOMINAIS'],
-                        inplace=False,
-                        ascending=False)
-            
-            # Soma vereadores eleitos
-            x = df2['QT_VOTOS_NOMINAIS'].count()
-            print(x)
-        
-            q = (sigma / x)
-            print(q)
-            qq = np.ceil(q)
+            data.append([YEAR, st, name, q, sigma2])
 
-            data.append([YEAR, i, name, qq, x])
+        df = pd.DataFrame(
+            data,
+            columns=[
+                'ANO_ELEICAO',
+                'SG_UF',
+                'NM_MUNICIPIO',
+                'Q_ELEITORAL',
+                'TOTAL_ELEITOS'])
 
-        final = pd.DataFrame(data, columns=['ANO_ELEICAO', 'SG_UF', 'NM_MUNICIPIO', 'Q_ELEITORAL', 'TOTAL_ELEITOS'])
-
-        output = 'all.csv' # @TODO: 2014
         if os.path.isfile(output):
-            final.to_csv(output, mode='a', index=False, sep=",", header=False)
+            df.to_csv(output, mode='a', index=False, sep=",", header=False)
         else:
-            final.to_csv(output, index=False, sep=",")
-    """
- 
-
-
-
-
-    """
-    i = 'SP'
-    votes = VOTACAO_ZONA_PATH + "votacao_candidato_munzona_" + YEAR + "_" + i + ".csv"
-
-    df0 = pd.read_csv(votes, sep=";", encoding = "ISO-8859-1")
-    df0 = df0.replace(np.nan, '', regex=True)
-    df0 = df0[['SQ_CANDIDATO', 'DS_CARGO', 'CD_CARGO', 'DS_SIT_TOT_TURNO', 'QT_VOTOS_NOMINAIS', 'NM_MUNICIPIO', 'DS_SIT_TOT_TURNO']]
-
-    sigma = group['QT_VOTOS_NOMINAIS'].sum()
-    elected = group.query("DS_SIT_TOT_TURNO != 'SUPLENTE' and DS_SIT_TOT_TURNO != 'NÃO ELEITO'")
-    print(elected)
-    print(elected['CD_CARGO'].count())
-    x = elected['CD_CARGO'].count()
-    q = sigma / x
-    print(q)
-    """
+            df.to_csv(output, index=False, sep=",")
 
 
 if __name__ == "__main__":
