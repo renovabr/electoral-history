@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 YEARS=("2010" "2012" "2014" "2016" "2018")
 
 function run_raw_data() {
