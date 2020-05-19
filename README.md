@@ -37,8 +37,6 @@ Three tables are created in the database called (*electoral_history*) to store t
 | raw_tse_voting_party_city  | Contains party votes by city.        |
 | votes_computed             | Contains candidates' computed votes. |
 
->Note: All tables are partitioned by the election year.
-
 ### Requeriments
 
 You must have it installed on your workstation:
