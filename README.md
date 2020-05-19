@@ -24,7 +24,7 @@ This project uses the following technologies:
   * [Python](https://www.python.org/)
 
 <p align="center"> 
-<img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/python-mysql.png">
+<img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/electoral-history.png">
 </p>
 
 Three tables are created in the database called (*electoral_history*) to store the data. Are they:
