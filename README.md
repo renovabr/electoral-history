@@ -22,6 +22,7 @@ This project uses the following technologies:
 
   * [MySQL](https://www.mysql.com/)
   * [Python](https://www.python.org/)
+  * [ELK](https://www.elastic.co/)
 
 <p align="center"> 
 <img src="https://raw.githubusercontent.com/renovabr/electoral-history/master/doc/img/electoral-history.png">
