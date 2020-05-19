@@ -8,7 +8,7 @@
 </a>
 </p>
 
-[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **23.271.685** million lines in the database.
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database, and then the data is placed in **Elasticsearch** using the ELK stack. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **23.271.685** million lines in the database.
 
 ## Synopsis
 
@@ -63,16 +63,16 @@ $ pipenv shell
 $ pipenv install
 ```
 
-The **tse-data.sh** script downloads the raw data using the year as a parameter. Example to download the year 2010:
+The **tse-data** script downloads the raw data using the year as a parameter. Example to download the year 2010:
 
 ```shell
-$ ./tse-data.sh 2010
+$ ./tse-data 2010
 ```
 
 You can also download them all using the command:
 
 ```shell
-$ for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data.sh ${i}; done
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./tse-data ${i}; done
 ```
 
 Wait for the data to download! The data is downloaded in the project folder at: *data/tse/YEAR*
@@ -95,10 +95,10 @@ $ mysql -u root -p < sql/schema.sql
 
 #### 3. Import all data to MySQL 
 
-To import the candidates data for all years, use the script: **run-import-all.sh**.
+To import the candidates data for all years, use the script: **run-import-all**.
 
 ```shell
-$ ./run-import-all.sh 'consulta-cand'
+$ ./run-import-all 'consulta-cand'
 ```
 
 If you want to import a specific year and state you can use the command:
@@ -112,7 +112,7 @@ $ ./01-consulta-cand.py -y 2010 -s 'SP' \
 The same procedure applies to the other tables. To import all candidates voting data, use the command:
 
 ```shell
-$ ./run-import-all.sh 'votacao-candidato'
+$ ./run-import-all 'votacao-candidato'
 ```
 
 If you want to import a specific year and state you can use the command:
@@ -126,7 +126,7 @@ $ ./02-votacao-candidato-munzona.py -y 2010 -s 'SP' -p \
 For the import of votes by party:
 
 ```shell
-$ ./run-import-all.sh 'votacao-partido'
+$ ./run-import-all 'votacao-partido'
 ```
 
 If you want to import a specific year and state you can use the command:
