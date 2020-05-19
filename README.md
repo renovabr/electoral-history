@@ -31,10 +31,11 @@ This project uses the following technologies:
 Three tables are created in the database called (*electoral_history*) to store the data. Are they:
 
 | Table  | Description | 
-| ------ | ----------------------------------------------------  | 
-| raw_tse_consult_candidates | Contains all candidates.          |
-| raw_tse_voting_cand_city   | Contains candidate votes by city. |
-| raw_tse_voting_party_city  | Contains party votes by city.     |
+| ------ | -------------------------------------------------------- | 
+| raw_tse_consult_candidates | Contains all candidates.             |
+| raw_tse_voting_cand_city   | Contains candidate votes by city.    |
+| raw_tse_voting_party_city  | Contains party votes by city.        |
+| votes_computed             | Contains candidates' computed votes. |
 
 >Note: All tables are partitioned by the election year.
 
