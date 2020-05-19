@@ -195,11 +195,11 @@ Checking the total number of votes of the Governors of the state of Santa Catari
 
 ```sql
 SELECT
-  sq_candidate AS sq,
-  nm_ballot_candidate AS name,
-  ds_position AS position,
-  nm_city AS city,
-  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
+  sq_candidate AS SQ,
+  nm_ballot_candidate AS Name,
+  ds_position AS Position,
+  nm_city AS City,
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS Votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
@@ -233,10 +233,10 @@ Checking the total number of votes of the Governors of the State of *Santa Catar
 
 ```sql
 SELECT
-  sq_candidate AS sq,
-  nm_ballot_candidate AS name,
-  ds_position AS position,
-  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
+  sq_candidate AS SQ,
+  nm_ballot_candidate AS Name,
+  ds_position AS Position,
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS Votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
@@ -263,10 +263,10 @@ Checking the total number of votes of the Governors of the State of *São Paulo*
 
 ```sql
 SELECT
-  sq_candidate AS sq,
-  nm_ballot_candidate AS name,
-  ds_position AS position,
-  format(sum(qt_votes_nominal), 0, 'de_DE') AS votes 
+  sq_candidate AS SQ,
+  nm_ballot_candidate AS Name,
+  ds_position AS Position,
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS Votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
@@ -299,8 +299,8 @@ Which top 10 city has the most votes for a distinguished candidate example the c
 
 ```sql
 SELECT
-  nm_city AS city,
-  sum(qt_votes_nominal) AS votes 
+  nm_city AS City,
+  sum(qt_votes_nominal) AS Votes 
 FROM
   raw_tse_voting_cand_city 
 WHERE
