@@ -49,3 +49,25 @@ ALTER TABLE raw_tse_voting_party_city PARTITION BY RANGE (UNIX_TIMESTAMP(end_par
 
 SELECT COUNT(*) FROM raw_tse_voting_party_city PARTITION (p2014);
 SELECT * FROM raw_tse_voting_party_city LIMIT 10;
+
+-- (0-4)
+SELECT
+  sq_candidate AS SQ,
+  nm_ballot_candidate AS Name,
+  ds_position AS Position,
+  nm_city AS City,
+  format(sum(qt_votes_nominal), 0, 'de_DE') AS Votes 
+FROM
+  raw_tse_voting_cand_city 
+WHERE
+  election_year = '2018' 
+  AND sg_uf = 'SP' 
+  AND nr_shift = 1 
+  AND cd_position = 3 
+GROUP BY
+  1,
+  2,
+  3,
+  4 
+ORDER BY
+  sum(qt_votes_nominal) DESC;

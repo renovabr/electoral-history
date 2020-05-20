@@ -552,15 +552,10 @@ def tic():
 
 def toc():
     end = time.time()
-    tmp = (end - TIC_TIME_START)
-    hours = (tmp // 3600)
-    tmp = (tmp - 3600 * hours)
-    minutes = (tmp // 60)
-    seconds = (tmp - 60 * minutes)
-    s = None
-    s = 'secounds' if seconds > 0 else s
-    s = 'minutes' if minutes > 0 else s
-    s = 'hours' if hours > 0 else s
-    m = (': > Elapsed time is %d:%d:%d {}.' % (
-        hours, minutes, seconds)).format(s)
-    print('%s\n' % m)
+    temp = end - TIC_TIME_START
+    print(temp)
+    hours = temp // 3600
+    temp = temp - 3600 * hours
+    minutes = temp // 60
+    seconds = temp - 60 * minutes
+    print('%d:%d:%d' % (hours, minutes, seconds))
