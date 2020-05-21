@@ -137,7 +137,18 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
   -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
 ```
 
-#### 4.Checking and analyzing data 
+#### 4. Computing all candidate votes 
+
+To calculate the total votes of candidates by zone, just run the script below:
+
+```shell
+$ cd src
+$ ./04-anl-compute-votes.py -y 2010 
+```
+
+The script must be executed per year and the results are saved in table *votes_computed*
+
+#### 5. Checking and analyzing data 
 
 There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx). 
 
