@@ -93,9 +93,11 @@ def main(argv):
             inplace=False,
             ascending=False)
 
+        final['votes_computed_id'] = final.index
+
         # final.to_csv('test.csv', index=False, sep=",")
         print('Inserting the data in table: votes_computed')
-        final.to_sql('votes_computed', con=engine, if_exists='append',
+        final.to_sql('votes_computed_2', con=engine, if_exists='append',
                      index_label='votes_computed_id', chunksize=1000)
 
     toc()
