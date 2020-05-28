@@ -44,6 +44,36 @@ STATES = [
     'TO'
 ]
 
+CAPITALS = {
+    'AC': 'RIO BRANCO',
+    'AL': 'MACEIÓ',
+    'AP': 'MACAPÁ',
+    'AM': 'MANAUS',
+    'BA': 'SALVADOR',
+    'CE': 'FORTALEZA',
+    'DF': 'BRASÍLIA',
+    'ES': 'VITÓRIA',
+    'GO': 'GOIÂNIA',
+    'MA': 'SÃO LUÍS',
+    'MT': 'CUIABÁ',
+    'MS': 'CAMPO GRANDE',
+    'MG': 'BELO HORIZONTE',
+    'PA': 'BELÉM',
+    'PB': 'JOÃO PESSOA',
+    'PR': 'CURITIBA',
+    'PE': 'RECIFE',
+    'PI': 'TERESINA',
+    'RJ': 'RIO DE JANEIRO',
+    'RN': 'NATAL',
+    'RS': 'PORTO ALEGRE',
+    'RO': 'PORTO VELHO	',
+    'RR': 'BOA VISTA',
+    'SC': 'FLORIANÓPOLIS',
+    'SP': 'SÃO PAULO',
+    'SE': 'ARACAJU',
+    'TO': 'PALMAS'
+}
+
 COLS_CONSULT_CANDIDATES_2010 = [
     'dt_tse_generation',
     'hh_tse_generation',

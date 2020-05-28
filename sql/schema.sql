@@ -228,3 +228,24 @@ CREATE TABLE IF NOT EXISTS raw_tse_voting_party_city (
   VALUES
     LESS THAN (MAXVALUE)
 );
+
+--
+-- 04 - Table used by script (votes_computed)
+--
+CREATE TABLE IF NOT EXISTS votes_computed (
+  votes_computed_id BIGINT NOT NULL AUTO_INCREMENT,
+  election_year TEXT,
+  sg_uf TEXT,
+  sq_candidate BIGINT DEFAULT NULL,
+  nr_cpf_candidate TEXT,
+  nm_candidate TEXT,
+  sg_party TEXT,
+  nm_ballot_candidate TEXT,
+  ds_position TEXT,
+  ds_situ_tot_shift TEXT,
+  nm_city TEXT,
+  qt_votes_nominal TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY (votes_computed_id)
+);

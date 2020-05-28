@@ -8,12 +8,22 @@ import sys
 import getopt
 from config import mysql_user, mysql_password
 from config import mysql_host, mysql_database, mysql_port
-from utils import STATES
+from utils import STATES, CAPITALS
 from utils import tic, toc
 from sqlalchemy import create_engine
 
 DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + \
     '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
+
+TABLE_NAME = 'votes_computed'
+TABLE_NAME_ID = 'votes_computed_id'
+
+
+def write_to_csv(df, output='data.csv'):
+    if os.path.isfile(output):
+        df.to_csv(output, mode='a', index=False, sep=",", header=False)
+    else:
+        df.to_csv(output, index=False, sep=",")
 
 
 def main(argv):
@@ -66,19 +76,39 @@ def main(argv):
         print(df0)
 
         print('Read votes: ' + st)
-        df1 = pd.read_sql("""SELECT
-          sq_candidate,
-          nm_ballot_candidate,
-          ds_position,
-          ds_situ_tot_shift,
-          format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal
-          FROM raw_tse_voting_cand_city
-          WHERE
-          election_year = '{}'
-          AND sg_uf = '{}'
-          AND nr_shift = 1
-          GROUP BY 1, 2, 3, 4
-          ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
+        df1 = 0
+        if year == '2016' or year == '2012':
+            print('Regional election')
+            df1 = pd.read_sql("""SELECT
+            sq_candidate,
+            nm_ballot_candidate,
+            ds_position,
+            ds_situ_tot_shift,
+            nm_city,
+            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal
+            FROM raw_tse_voting_cand_city
+            WHERE
+            election_year = '{}'
+            AND sg_uf = '{}'
+            AND nr_shift = 1
+            GROUP BY 1, 2, 3, 4, 5
+            ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
+        else:
+            print('National and state election')
+            df1 = pd.read_sql("""SELECT
+            sq_candidate,
+            nm_ballot_candidate,
+            ds_position,
+            ds_situ_tot_shift,
+            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal
+            FROM raw_tse_voting_cand_city
+            WHERE
+            election_year = '{}'
+            AND sg_uf = '{}'
+            AND nr_shift = 1
+            GROUP BY 1, 2, 3, 4
+            ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
+            df1['nm_city'] = CAPITALS[st]
 
         print(df1)
 
@@ -86,20 +116,21 @@ def main(argv):
         df3 = pd.merge(df0, df1, on='sq_candidate', how='inner')
         df3 = df3.drop_duplicates()
 
-        df3['created_at'] = dt.datetime.now()
-        df3['updated_at'] = dt.datetime.now()
         final = df3.sort_values(
             by=['qt_votes_nominal'],
             inplace=False,
             ascending=False)
 
-        final['votes_computed_id'] = final.index
+        # print('Write data in CSV file')
+        # write_to_csv(final)
 
-        # final.to_csv('test.csv', index=False, sep=",")
         print('Inserting the data in table: votes_computed')
-        final.to_sql('votes_computed_2', con=engine, if_exists='append',
-                     index_label='votes_computed_id', chunksize=1000)
-
+        final.to_sql(
+            con=engine,
+            name=TABLE_NAME,
+            if_exists='append',
+            index=False,
+            index_label=TABLE_NAME_ID)
     toc()
 
 
