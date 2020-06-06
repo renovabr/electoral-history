@@ -15,8 +15,8 @@ from sqlalchemy import create_engine
 DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + \
     '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
 
-TABLE_NAME = 'votes_computed'
-TABLE_NAME_ID = 'votes_computed_id'
+TABLE_NAME = 'cand_info'
+TABLE_NAME_ID = 'cand_info_id'
 
 
 def write_to_csv(df, output='data.csv'):
@@ -28,12 +28,12 @@ def write_to_csv(df, output='data.csv'):
 
 def main(argv):
     global STATES
-    year, state = (None, None)
-    usage = '04-anl-compute-votes.py -y 2014 -s SC'
+    year, state, ext = (None, None, None)
+    usage = '04-cand-info.py -y 2014 -s SC -e data.csv'
 
     try:
         opts, _args = getopt.getopt(
-            argv, 'hy:s:', ['year=', 'state='])
+            argv, 'hy:s:e:', ['year=', 'state=', 'ext='])
     except getopt.GetoptError:
         print(usage)
         sys.exit(2)
@@ -45,6 +45,8 @@ def main(argv):
             year = arg
         elif opt in ('-s', '--state'):
             state = arg
+        elif opt in ('-e', '--ext='):
+            ext = arg
 
     if year == '2010' or year == '2012' or year == '2014' or year == '2016' or year == '2018':
         if year == '2016' or year == '2012':
@@ -68,7 +70,14 @@ def main(argv):
           sq_candidate,
           nr_cpf_candidate,
           nm_candidate,
-          sg_party
+          sg_party,
+          nm_email,
+          ds_genre,
+          ds_degree_instruction,
+          ds_race_color,
+          ds_occupation,
+          nr_campaign_max_expenditure,
+          st_reelection
           FROM raw_tse_consult_candidates
           WHERE election_year = '{}' AND
           sg_uf = '{}'""".format(year, st), engine)
@@ -85,13 +94,15 @@ def main(argv):
             ds_position,
             ds_situ_tot_shift,
             nm_city,
-            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal
+            ds_situ_cand,
+            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+            sum(qt_votes_nominal) AS qt_votes_nominal_int
             FROM raw_tse_voting_cand_city
             WHERE
             election_year = '{}'
             AND sg_uf = '{}'
             AND nr_shift = 1
-            GROUP BY 1, 2, 3, 4, 5
+            GROUP BY 1, 2, 3, 4, 5, 6
             ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
         else:
             print('National and state election')
@@ -100,19 +111,20 @@ def main(argv):
             nm_ballot_candidate,
             ds_position,
             ds_situ_tot_shift,
-            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal
+            ds_situ_cand,
+            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+            sum(qt_votes_nominal) AS qt_votes_nominal_int
             FROM raw_tse_voting_cand_city
             WHERE
             election_year = '{}'
             AND sg_uf = '{}'
             AND nr_shift = 1
-            GROUP BY 1, 2, 3, 4
+            GROUP BY 1, 2, 3, 4, 5
             ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
             df1['nm_city'] = CAPITALS[st]
 
         print(df1)
 
-        # df2 = df1.groupby(['sq_candidate']).sum()
         df3 = pd.merge(df0, df1, on='sq_candidate', how='inner')
         df3 = df3.drop_duplicates()
 
@@ -121,16 +133,18 @@ def main(argv):
             inplace=False,
             ascending=False)
 
-        # print('Write data in CSV file')
-        # write_to_csv(final)
+        if ext:
+            print('Write/append data in CSV file:', ext)
+            write_to_csv(final)
 
-        print('Inserting the data in table: votes_computed')
+        print('Inserting the data in table:', TABLE_NAME)
         final.to_sql(
             con=engine,
             name=TABLE_NAME,
             if_exists='append',
             index=False,
             index_label=TABLE_NAME_ID)
+
     toc()
 
 

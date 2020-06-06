@@ -583,7 +583,6 @@ def tic():
 def toc():
     end = time.time()
     temp = end - TIC_TIME_START
-    print(temp)
     hours = temp // 3600
     temp = temp - 3600 * hours
     minutes = temp // 60

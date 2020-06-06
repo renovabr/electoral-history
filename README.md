@@ -35,7 +35,7 @@ Three tables are created in the database called (*electoral_history*) to store t
 | raw_tse_consult_candidates | Contains all candidates.             |
 | raw_tse_voting_cand_city   | Contains candidate votes by city.    |
 | raw_tse_voting_party_city  | Contains party votes by city.        |
-| votes_computed             | Contains candidates' computed votes. |
+| cand_info                  | Contains candidates' computed votes. |
 
 ### Requeriments
 
@@ -139,14 +139,21 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
 
 #### 4. Computing all candidate votes 
 
-To calculate the total votes of candidates by zone, just run the script below:
+It contains information on the candidates and the sum of votes. 
 
 ```shell
 $ cd src
-$ ./04-anl-compute-votes.py -y 2010 
+$ ./04-cand-info.py -y 2010 
 ```
 
-The script must be executed per year and the results are saved in table *votes_computed*
+If you want to listen to only one state and save it in a CSV file, use the command:
+
+```shell
+$ cd src
+$ ./04-cand-info.py -y 2018 -s SC -e data.csv
+```
+
+The script must be executed per year and the results are saved in table *cand_info*
 
 #### 5. Checking and analyzing data 
 

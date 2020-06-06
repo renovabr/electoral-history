@@ -71,3 +71,12 @@ GROUP BY
   4 
 ORDER BY
   sum(qt_votes_nominal) DESC;
+
+-- (0-5)
+SELECT 
+  sq_candidate, 
+  COUNT(sq_candidate)
+FROM
+  cand_info
+GROUP BY sq_candidate
+HAVING COUNT(sq_candidate) > 1;

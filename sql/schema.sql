@@ -230,10 +230,10 @@ CREATE TABLE IF NOT EXISTS raw_tse_voting_party_city (
 );
 
 --
--- 04 - Table used by script (votes_computed)
+-- 04 - Table used by script (cand_info)
 --
-CREATE TABLE IF NOT EXISTS votes_computed (
-  votes_computed_id BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS cand_info (
+  cand_info_id BIGINT NOT NULL AUTO_INCREMENT,
   election_year TEXT,
   sg_uf TEXT,
   sq_candidate BIGINT DEFAULT NULL,
@@ -244,8 +244,17 @@ CREATE TABLE IF NOT EXISTS votes_computed (
   ds_position TEXT,
   ds_situ_tot_shift TEXT,
   nm_city TEXT,
+  ds_situ_cand TEXT,
+  nm_email TEXT, 
+  ds_genre TEXT, 
+  ds_degree_instruction TEXT, 
+  ds_race_color TEXT, 
+  ds_occupation TEXT, 
+  nr_campaign_max_expenditure INT, 
+  st_reelection TEXT, 
   qt_votes_nominal TEXT,
+  qt_votes_nominal_int INT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  KEY (votes_computed_id)
+  KEY (cand_info_id)
 );
