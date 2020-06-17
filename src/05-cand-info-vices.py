@@ -197,6 +197,8 @@ def main(argv):
                         if_exists='append',
                         index=False,
                         index_label=TABLE_NAME_ID)
+            else:
+                raise ValueError('Invalid year')
             bar.next()
         bar.finish()
 
