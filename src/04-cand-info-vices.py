@@ -197,9 +197,6 @@ def main(argv):
                         if_exists='append',
                         index=False,
                         index_label=TABLE_NAME_ID)
-                else:
-                    pass
-                    # print('The data already exists...')
             bar.next()
         bar.finish()
 
