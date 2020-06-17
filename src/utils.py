@@ -587,4 +587,4 @@ def toc():
     temp = temp - 3600 * hours
     minutes = temp // 60
     seconds = temp - 60 * minutes
-    print('%d:%d:%d' % (hours, minutes, seconds))
+    print('\n%d:%d:%d' % (hours, minutes, seconds))

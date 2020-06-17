@@ -83,7 +83,7 @@ def write_to_csv(df, output='data.csv'):
 def main(argv):
     global STATES
     year, state, ext = (None, None, None)
-    usage = '04-cand-info-vices.py -y 2016 -s SC -e data.csv'
+    usage = '05-cand-info-vices.py -y 2016 -s SC -e data.csv'
 
     try:
         opts, _args = getopt.getopt(
