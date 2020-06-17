@@ -71,17 +71,23 @@ def main(argv):
           nr_cpf_candidate,
           nm_candidate,
           sg_party,
+          nr_party,
           nm_email,
           ds_genre,
           ds_degree_instruction,
           ds_race_color,
           ds_occupation,
           nr_campaign_max_expenditure,
-          st_reelection
+          st_reelection,
+          dt_birth,
+          nr_shift,
+          ds_election,
+          sq_alliance
           FROM raw_tse_consult_candidates
           WHERE election_year = '{}' AND
           sg_uf = '{}'""".format(year, st), engine)
 
+        df0 = df0.applymap(lambda s: s.upper() if isinstance(s, str) else s)
         print(df0)
 
         print('Read votes: ' + st)
@@ -123,12 +129,13 @@ def main(argv):
             ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
             df1['nm_city'] = CAPITALS[st]
 
+        df1 = df1.applymap(lambda s: s.upper() if isinstance(s, str) else s)
         print(df1)
 
-        df3 = pd.merge(df0, df1, on='sq_candidate', how='inner')
-        df3 = df3.drop_duplicates()
+        df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
+        df2 = df2.drop_duplicates()
 
-        final = df3.sort_values(
+        final = df2.sort_values(
             by=['qt_votes_nominal'],
             inplace=False,
             ascending=False)
