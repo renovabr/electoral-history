@@ -8,7 +8,7 @@
 </a>
 </p>
 
-[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database, and then the data is placed in **Elasticsearch** using the ELK stack. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **23.271.685** million lines in the database.
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database, and then the data is placed in **Elasticsearch** using the ELK stack. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **24.340.098** million lines in the database.
 
 ## Synopsis
 
@@ -30,12 +30,12 @@ This project uses the following technologies:
 
 Three tables are created in the database called (*electoral_history*) to store the data. Are they:
 
-| Table  | Description | 
-| ------ | -------------------------------------------------------- | 
-| raw_tse_consult_candidates | Contains all candidates.             |
-| raw_tse_voting_cand_city   | Contains candidate votes by city.    |
-| raw_tse_voting_party_city  | Contains party votes by city.        |
-| cand_info                  | Contains candidates' computed votes. |
+| Table                      | Lines      | Description
+| -------------------------- | ---------- |------------------------------------- | 
+| raw_tse_consult_candidates | 10.600.43  | Contains all candidates.             |
+| raw_tse_voting_cand_city   | 20.7102.63 | Contains candidate votes by city.    |
+| raw_tse_voting_party_city  | 16.044.42  | Contains party votes by city.        |
+| cand_info                  | 9.653.50   | Merge with candidate information.    |
 
 ### Requeriments
 
