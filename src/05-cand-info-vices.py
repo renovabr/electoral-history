@@ -115,9 +115,14 @@ def main(argv):
 
     tic()
 
+    shift = 1
+
     for st in STATES:
+        # df = pd.read_sql("""SELECT nm_city FROM cand_info
+        #    WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
+
         df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
+            WHERE sg_uf = '{}' AND nm_city='RIO DE JANEIRO' GROUP BY 1 ORDER BY 1""".format(st), engine)
 
         print('Reading candidates for vice-mayor of all cities in the state of:', st)
 
@@ -130,7 +135,7 @@ def main(argv):
                 SELECT
                     t2.election_year,
                     t2.sg_uf,
-                    t1.sq_candidate ,
+                    t1.sq_candidate,
                     t1.nr_cpf_candidate,
                     t1.nm_candidate,
                     t1.sg_party,
@@ -162,7 +167,7 @@ def main(argv):
 
                 df1 = pd.read_sql("""SELECT * FROM cand_info
                     WHERE sg_uf = '{}' AND nm_city = '{}'
-                        AND ds_position = 'PREFEITO'""".format(st, ct), engine)
+                        AND ds_position = 'PREFEITO' AND ds_situ_tot_shift <> 'ELEITO'""".format(st, ct), engine)
 
                 df2 = pd.merge(df1, df0, on='sq_alliance', how='inner')
 
@@ -172,7 +177,8 @@ def main(argv):
                 df4 = df4.applymap(
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
-                df4 = df4.drop_duplicates()
+                df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
+                # df4 = df4.drop_duplicates(['sq_alliance'], keep='last')
 
                 df5 = pd.read_sql("""SELECT * FROM cand_info
                     WHERE sg_uf = '{}' AND nm_city = '{}'
@@ -180,6 +186,7 @@ def main(argv):
 
                 for i in df4['sq_candidate'].tolist():
                     if any(df5['sq_candidate'] == i):
+                        print(i)
                         df4 = df4[df4['sq_candidate'] != i]
 
                 if not df4.empty:
