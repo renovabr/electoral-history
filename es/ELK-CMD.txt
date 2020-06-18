@@ -19,4 +19,3 @@ curl -XGET 'localhost:9200/cand_info/_search?q=10000000517&pretty=true'
 -- Delete index
 --
 curl -XDELETE localhost:9200/cand_info
-
