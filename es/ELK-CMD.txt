@@ -15,4 +15,8 @@ curl -XPOST 'http://localhost:9200/raw_tse_voting_party_city_2012/_count?pretty=
 --
 curl -XGET 'localhost:9200/cand_info/_search?q=10000000517&pretty=true'
 
+--
+-- Delete index
+--
+curl -XDELETE localhost:9200/cand_info
 
