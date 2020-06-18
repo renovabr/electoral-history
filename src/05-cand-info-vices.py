@@ -154,7 +154,7 @@ def main(argv):
                 FROM raw_tse_consult_candidates t1
                     INNER JOIN cand_info AS t2 ON (t1.sq_alliance = t2.sq_alliance)
                     WHERE t1.election_year = '{}' AND t1.sg_uf = '{}' AND t1.cd_position = 12 AND t2.nm_city = '{}'
-                    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 """.format(year, st, ct), engine)
+                    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23""".format(year, st, ct), engine)
 
                 df0 = df0.applymap(
                     lambda s: s.upper() if isinstance(

@@ -29,7 +29,7 @@ def write_to_csv(df, output='data.csv'):
 def main(argv):
     global STATES
     year, state, ext = (None, None, None)
-    usage = '04-cand-info.py -y 2014 -s SC -e data.csv'
+    usage = '04-cand-info.py -y 2016 -s SC -e data.csv'
 
     try:
         opts, _args = getopt.getopt(
@@ -64,93 +64,96 @@ def main(argv):
 
     for st in STATES:
         print('Read canditates: ' + st)
-        df0 = pd.read_sql("""SELECT
-          election_year,
-          sg_uf,
-          sq_candidate,
-          nr_cpf_candidate,
-          nm_candidate,
-          sg_party,
-          nr_party,
-          nm_email,
-          ds_genre,
-          ds_degree_instruction,
-          ds_race_color,
-          ds_occupation,
-          nr_campaign_max_expenditure,
-          st_reelection,
-          dt_birth,
-          nr_shift,
-          ds_election,
-          sq_alliance
+
+        df0 = pd.read_sql("""
+          SELECT
+            election_year,
+            sg_uf,
+            sq_candidate,
+            nr_cpf_candidate,
+            nm_candidate,
+            sg_party,
+            nr_party,
+            nm_email,
+            ds_genre,
+            ds_degree_instruction,
+            ds_race_color,
+            ds_occupation,
+            nr_campaign_max_expenditure,
+            st_reelection,
+            dt_birth,
+            nr_shift,
+            ds_election,
+            sq_alliance
           FROM raw_tse_consult_candidates
-          WHERE election_year = '{}' AND
-          sg_uf = '{}'""".format(year, st), engine)
+            WHERE election_year = '{}' AND sg_uf = '{}'""".format(year, st), engine)
 
         df0 = df0.applymap(lambda s: s.upper() if isinstance(s, str) else s)
-        print(df0)
 
-        print('Read votes: ' + st)
-        df1 = 0
-        if year == '2016' or year == '2012':
-            print('Regional election')
-            df1 = pd.read_sql("""SELECT
-            sq_candidate,
-            nm_ballot_candidate,
-            ds_position,
-            ds_situ_tot_shift,
-            nm_city,
-            ds_situ_cand,
-            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
-            sum(qt_votes_nominal) AS qt_votes_nominal_int
-            FROM raw_tse_voting_cand_city
-            WHERE
-            election_year = '{}'
-            AND sg_uf = '{}'
-            AND nr_shift = 1
-            GROUP BY 1, 2, 3, 4, 5, 6
-            ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
-        else:
-            print('National and state election')
-            df1 = pd.read_sql("""SELECT
-            sq_candidate,
-            nm_ballot_candidate,
-            ds_position,
-            ds_situ_tot_shift,
-            ds_situ_cand,
-            format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
-            sum(qt_votes_nominal) AS qt_votes_nominal_int
-            FROM raw_tse_voting_cand_city
-            WHERE
-            election_year = '{}'
-            AND sg_uf = '{}'
-            AND nr_shift = 1
-            GROUP BY 1, 2, 3, 4, 5
-            ORDER BY sum(qt_votes_nominal) DESC""".format(year, st), engine)
-            df1['nm_city'] = CAPITALS[st]
+        df = pd.read_sql("""SELECT nr_shift FROM raw_tse_voting_cand_city
+            WHERE sg_uf = '{}' GROUP BY 1""".format(st), engine)
 
-        df1 = df1.applymap(lambda s: s.upper() if isinstance(s, str) else s)
-        print(df1)
+        for shitf in df['nr_shift'].tolist():
+            print('Shift number: ' + str(shitf))
+            df1 = 0
 
-        df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
-        df2 = df2.drop_duplicates()
+            if year == '2016' or year == '2012':
+                print('Regional election')
+                df1 = pd.read_sql("""
+                SELECT
+                    sq_candidate,
+                    nm_ballot_candidate,
+                    ds_position,
+                    ds_situ_tot_shift,
+                    nm_city,
+                    ds_situ_cand,
+                    format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+                    sum(qt_votes_nominal) AS qt_votes_nominal_int
+                FROM raw_tse_voting_cand_city
+                    WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
+                    GROUP BY 1, 2, 3, 4, 5, 6
+                    ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shitf), engine)
+            else:
+                print('National and state election')
+                df1 = pd.read_sql("""
+                SELECT
+                    sq_candidate,
+                    nm_ballot_candidate,
+                    ds_position,
+                    ds_situ_tot_shift,
+                    ds_situ_cand,
+                    format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+                    sum(qt_votes_nominal) AS qt_votes_nominal_int
+                FROM raw_tse_voting_cand_city
+                    WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
+                    GROUP BY 1, 2, 3, 4, 5
+                    ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shitf), engine)
+                df1['nm_city'] = CAPITALS[st]
 
-        final = df2.sort_values(
-            by=['qt_votes_nominal'],
-            inplace=False,
-            ascending=False)
+            df1 = df1.applymap(
+                lambda s: s.upper() if isinstance(
+                    s, str) else s)
 
-        if ext:
-            print('Write/append data in CSV file:', ext)
-            write_to_csv(final)
+            df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
+            df3 = df2.drop_duplicates(['sq_candidate'], keep='last')
 
-        print('Inserting the data in table:', TABLE_NAME)
-        final.to_sql(
-            con=engine,
-            name=TABLE_NAME,
-            if_exists='append',
-            index=False,
-            index_label=TABLE_NAME_ID)
+            if not df3.empty:
+                final = df3.sort_values(
+                    by=['qt_votes_nominal'],
+                    inplace=False,
+                    ascending=False)
+
+                if ext:
+                    print('Write/append data in CSV file:', ext)
+                    write_to_csv(final)
+
+                print('Inserting the data in table:', TABLE_NAME)
+                final.to_sql(
+                    con=engine,
+                    name=TABLE_NAME,
+                    if_exists='append',
+                    index=False,
+                    index_label=TABLE_NAME_ID)
 
     toc()
 
