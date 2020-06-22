@@ -118,11 +118,11 @@ def main(argv):
     shift = 1
 
     for st in STATES:
-        # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        #    WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
-
         df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE sg_uf = '{}' AND nm_city='RIO DE JANEIRO' GROUP BY 1 ORDER BY 1""".format(st), engine)
+            WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
+
+        # df = pd.read_sql("""SELECT nm_city FROM cand_info
+        #    WHERE sg_uf = '{}' AND nm_city='RIO DE JANEIRO' GROUP BY 1 ORDER BY 1""".format(st), engine)
 
         print('Reading candidates for vice-mayor of all cities in the state of:', st)
 
@@ -177,8 +177,8 @@ def main(argv):
                 df4 = df4.applymap(
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
-                df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
-                # df4 = df4.drop_duplicates(['sq_alliance'], keep='last')
+                # df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
+                df4 = df4.drop_duplicates(['sq_alliance'], keep='last')
 
                 df5 = pd.read_sql("""SELECT * FROM cand_info
                     WHERE sg_uf = '{}' AND nm_city = '{}'
