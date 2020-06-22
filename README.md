@@ -137,9 +137,9 @@ $ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
   -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
 ```
 
-#### 4. Computing all candidate votes 
+#### 4. Computing candidate votes and information 
 
-It contains information on the candidates and the sum of votes. 
+This table is a merge with the candidate base and the voting base by zone.
 
 ```shell
 $ cd src
@@ -151,6 +151,13 @@ If you want to listen to only one state and save it in a CSV file, use the comma
 ```shell
 $ cd src
 $ ./04-cand-info.py -y 2018 -s SC -e data.csv
+```
+
+To process every year use the command:
+
+```shell
+$ cd src
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./04-cand-info.py -y ${i}; done
 ```
 
 The script must be executed per year and the results are saved in table *cand_info*
