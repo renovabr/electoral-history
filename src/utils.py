@@ -389,6 +389,44 @@ COLS_VOTES_PARTIES = [
 ]
 
 
+COLS_GOODS_DECLARED_2010_2012 = [
+    'dt_tse_generation',
+    'hh_tse_generation',
+    'election_year',
+    'nm_type_election',
+    'sg_uf',
+    'sq_candidate',
+    'cd_type_cand_goods_declared',
+    'ds_type_cand_goods_declared',
+    'ds_cand_goods_declared',
+    'amount_goods_declared',
+    'dt_tse_last_update',
+    'hh_tse_last_update'
+]
+
+COLS_GOODS_DECLARED = [
+    'dt_tse_generation',
+    'hh_tse_generation',
+    'election_year',
+    'type_election',
+    'nm_type_election',
+    'cd_election',
+    'ds_election',
+    'dt_election',
+    'sg_uf',
+    'sg_ue',
+    'nm_ue',
+    'sq_candidate',
+    'nr_order_candidate',
+    'cd_type_cand_goods_declared',
+    'ds_type_cand_goods_declared',
+    'ds_cand_goods_declared',
+    'amount_goods_declared',
+    'dt_tse_last_update',
+    'hh_tse_last_update'
+]
+
+
 def standardize_df_cand(df, year):
     df['type_election'] = 0
     df['nm_type_election'] = ''
@@ -570,6 +608,40 @@ def standardize_df_votes_party(df, year):
         'st_vote_in_transit',
         'qt_votes_nominal',
         'qt_votes_legend'
+    ]]
+
+    return df
+
+
+def standardize_df_goods_declared(df, year):
+    df['type_election'] = 0
+    df['cd_election'] = 0
+    df['ds_election'] = ''
+    df['dt_election'] = '01/01/' + str(year)
+    df['sg_ue'] = ''
+    df['nm_ue'] = ''
+    df['nr_order_candidate'] = 0
+
+    df = df[[
+        'dt_tse_generation',
+        'hh_tse_generation',
+        'election_year',
+        'type_election',
+        'nm_type_election',
+        'cd_election',
+        'ds_election',
+        'dt_election',
+        'sg_uf',
+        'sg_ue',
+        'nm_ue',
+        'sq_candidate',
+        'nr_order_candidate',
+        'cd_type_cand_goods_declared',
+        'ds_type_cand_goods_declared',
+        'ds_cand_goods_declared',
+        'amount_goods_declared',
+        'dt_tse_last_update',
+        'hh_tse_last_update'
     ]]
 
     return df

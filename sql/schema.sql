@@ -230,7 +230,56 @@ CREATE TABLE IF NOT EXISTS raw_tse_voting_party_city (
 );
 
 --
--- 04 - Table used by script (cand_info)
+-- 04 - Table used by script (bem_candidato_xxxx)
+--
+CREATE TABLE IF NOT EXISTS raw_tse_cand_goods_declared (
+  raw_tse_cand_goods_declared_id BIGINT NOT NULL AUTO_INCREMENT,
+  dt_tse_generation DATE NOT NULL,
+  hh_tse_generation TIME NOT NULL,
+  election_year ENUM('2010', '2012', '2014', '2016', '2018') NOT NULL,
+  type_election TINYINT UNSIGNED NOT NULL,
+  nm_type_election VARCHAR(50) NOT NULL,
+  cd_election SMALLINT UNSIGNED NOT NULL,
+  ds_election VARCHAR(50) NOT NULL,
+  dt_election DATE NOT NULL,
+  sg_uf CHAR(2) NOT NULL,
+  sg_ue VARCHAR(50) NOT NULL,
+  nm_ue VARCHAR(50) NOT NULL,
+  sq_candidate BIGINT NOT NULL,
+  nr_order_candidate MEDIUMINT NOT NULL,
+  cd_type_cand_goods_declared MEDIUMINT NOT NULL,
+  ds_type_cand_goods_declared VARCHAR(500) NOT NULL,
+  ds_cand_goods_declared VARCHAR(500) NOT NULL,
+  amount_goods_declared VARCHAR(100) NOT NULL,
+  dt_tse_last_update DATE NOT NULL,
+  hh_tse_last_update TIME NOT NULL,
+  end_partition TIMESTAMP NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (raw_tse_cand_goods_declared_id, end_partition)
+) PARTITION BY RANGE (UNIX_TIMESTAMP(end_partition)) (
+  PARTITION p2010
+  VALUES
+    LESS THAN (UNIX_TIMESTAMP('2010-12-31 23:59:59')),
+    PARTITION p2012
+  VALUES
+    LESS THAN (UNIX_TIMESTAMP('2012-12-31 23:59:59')),
+    PARTITION p2014
+  VALUES
+    LESS THAN (UNIX_TIMESTAMP('2014-12-31 23:59:59')),
+    PARTITION p2016
+  VALUES
+    LESS THAN (UNIX_TIMESTAMP('2016-12-31 23:59:59')),
+    PARTITION p2018
+  VALUES
+    LESS THAN (UNIX_TIMESTAMP('2018-12-31 23:59:59')),
+    PARTITION pmax
+  VALUES
+    LESS THAN (MAXVALUE)
+);
+
+--
+-- 05 - Table used by script (cand_info)
 --
 CREATE TABLE IF NOT EXISTS cand_info (
   cand_info_id BIGINT NOT NULL AUTO_INCREMENT,

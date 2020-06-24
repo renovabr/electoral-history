@@ -115,19 +115,19 @@ def main(argv):
 
     tic()
 
-    shift = 1
+    shift = 2
 
     for st in STATES:
-        df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
-
         # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        #    WHERE sg_uf = '{}' AND nm_city='RIO DE JANEIRO' GROUP BY 1 ORDER BY 1""".format(st), engine)
+        #    WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
+
+        df = pd.read_sql("""SELECT nm_city FROM cand_info
+            WHERE sg_uf = '{}' AND nm_city="RIO DE JANEIRO" GROUP BY 1 ORDER BY 1""".format(st), engine)
 
         print('Reading candidates for vice-mayor of all cities in the state of:', st)
 
         dfcount = df['nm_city'].count()
-        bar = Bar('Progress', max=dfcount)
+        # bar = Bar('Progress', max=dfcount)
 
         for ct in df['nm_city'].tolist():
             if year == '2016' or year == '2012':
@@ -158,16 +158,17 @@ def main(argv):
                     t1.sq_alliance
                 FROM raw_tse_consult_candidates t1
                     INNER JOIN cand_info AS t2 ON (t1.sq_alliance = t2.sq_alliance)
-                    WHERE t1.election_year = '{}' AND t1.sg_uf = '{}' AND t1.cd_position = 12 AND t2.nm_city = '{}'
-                    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23""".format(year, st, ct), engine)
+                    WHERE t1.election_year = '{}' AND t1.sg_uf = '{}'
+                    AND t1.cd_position = 12 AND t2.nm_city = "{}" AND t1.nr_shift = '{}'
+                    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23""".format(year, st, ct, shift), engine)
 
                 df0 = df0.applymap(
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
 
                 df1 = pd.read_sql("""SELECT * FROM cand_info
-                    WHERE sg_uf = '{}' AND nm_city = '{}'
-                        AND ds_position = 'PREFEITO' AND ds_situ_tot_shift <> 'ELEITO'""".format(st, ct), engine)
+                    WHERE sg_uf = '{}' AND nm_city = "{}"
+                        AND ds_position = 'PREFEITO'""".format(st, ct), engine)
 
                 df2 = pd.merge(df1, df0, on='sq_alliance', how='inner')
 
@@ -178,15 +179,27 @@ def main(argv):
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
                 # df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
-                df4 = df4.drop_duplicates(['sq_alliance'], keep='last')
+
+                if shift == 1:
+                    print('AAA')
+                    if any(df4['ds_situ_tot_shift'] == '2º TURNO'):
+                        df4 = df4.where(df4["ds_situ_tot_shift"] != '2º TURNO')
+                elif shift == 2:
+                    print('BBBBB')
+                    # print(df4)
+                    # print(df4['ds_situ_tot_shift'])
+                    # df = df4.where(df4['sq_candidate'] == df4['sq_candidate'])
+                    df = df4['sq_candidate'].equals(df4['sq_candidate'])
+                    if df:
+                        print(df4['sq_candidate'])
+                    pass
 
                 df5 = pd.read_sql("""SELECT * FROM cand_info
-                    WHERE sg_uf = '{}' AND nm_city = '{}'
+                    WHERE sg_uf = '{}' AND nm_city = "{}"
                         AND ds_position = 'VICE-PREFEITO'""".format(st, ct), engine)
 
                 for i in df4['sq_candidate'].tolist():
                     if any(df5['sq_candidate'] == i):
-                        print(i)
                         df4 = df4[df4['sq_candidate'] != i]
 
                 if not df4.empty:
@@ -206,8 +219,8 @@ def main(argv):
                         index_label=TABLE_NAME_ID)
             else:
                 raise ValueError('Invalid year')
-            bar.next()
-        bar.finish()
+            # bar.next()
+        # bar.finish()
 
     toc()
 

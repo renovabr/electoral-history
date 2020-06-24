@@ -46,8 +46,33 @@ function get_vot_data() {
   fi
 }
 
+function get_bem_data() {
+  year="${1}"
+  base=data/tse/${year}
+
+  data=("bem_candidato/bem_candidato_${year}.zip")
+
+  for i in "${data[@]}"
+  do
+    echo "${URL}$i"
+    wget -N -P ${base} "${URL}${i}" 
+  done
+
+  if [ ! -d "${base}/bem_candidato_${year}" ]; then
+    unzip ${base}/bem_candidato_${year}.zip -d ${base}/bem_candidato_${year}
+  fi
+}
+
 [[ "$(command -v wget)" ]] || { echo "Sorry! Command (wget) is not installed...." 1>&2 && exit -1; }
 [[ "$(command -v unzip)" ]] || { echo "Sorry! Command (unzip) is not installed...." 1>&2 && exit -1; }
+
+# TEST
+# get_bem_data "2010"
+get_bem_data "2016"
+
+# get_bem_data "2018"
+
+exit 
 
 if [ $# -gt 0 ]; then
   if [ "${1}" == "2010" ] || 
@@ -59,7 +84,8 @@ if [ $# -gt 0 ]; then
   fi
   base_dir "${1}" &&
   get_cand_data "${1}" &&
-  get_vot_data "${1}"
+  get_vot_data "${1}" &&
+  get_bem_data "${1}"
 else
   echo "Add argument YEAR eg: 2010 2012 2014 2016 2018"
 fi
