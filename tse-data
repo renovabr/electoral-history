@@ -66,14 +66,6 @@ function get_bem_data() {
 [[ "$(command -v wget)" ]] || { echo "Sorry! Command (wget) is not installed...." 1>&2 && exit -1; }
 [[ "$(command -v unzip)" ]] || { echo "Sorry! Command (unzip) is not installed...." 1>&2 && exit -1; }
 
-# TEST
-# get_bem_data "2010"
-get_bem_data "2016"
-
-# get_bem_data "2018"
-
-exit 
-
 if [ $# -gt 0 ]; then
   if [ "${1}" == "2010" ] || 
     [ "${1}" == "2012" ] || [ "${1}" == "2014" ] || 
