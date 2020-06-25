@@ -165,6 +165,8 @@ def main(argv):
                     if_exists='append',
                     index=False,
                     index_label=TABLE_NAME_ID)
+            else:
+                raise ValueError('The dataframe is empty...')
 
     toc()
 

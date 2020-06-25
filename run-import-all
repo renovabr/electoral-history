@@ -27,6 +27,8 @@ if [ $# -gt 0 ]; then
   	run_raw_data "02-votacao-candidato-munzona.py" "votacao_candidato_munzona_"
   elif [ "${1}" == "votacao-partido" ]; then
     run_raw_data "03-votacao-partido-munzona.py" "votacao_partido_munzona_"
+  elif [ "${1}" == "bem-candidato" ]; then
+    run_raw_data "04-bens-candidato.py" "bem_candidato_"    
   else
     echo "Argument is not valid ${1}"
   fi
