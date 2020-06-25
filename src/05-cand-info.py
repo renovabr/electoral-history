@@ -107,7 +107,7 @@ def main(argv):
                     ds_situ_tot_shift,
                     nm_city,
                     ds_situ_cand,
-                    format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+                    format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
                     sum(qt_votes_nominal) AS qt_votes_nominal_int
                 FROM raw_tse_voting_cand_city
                     WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
@@ -122,7 +122,7 @@ def main(argv):
                     ds_position,
                     ds_situ_tot_shift,
                     ds_situ_cand,
-                    format(sum(qt_votes_nominal), 0, 'de_DE') AS qt_votes_nominal,
+                    format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
                     sum(qt_votes_nominal) AS qt_votes_nominal_int
                 FROM raw_tse_voting_cand_city
                     WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
@@ -137,8 +137,19 @@ def main(argv):
             df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
             df3 = df2.drop_duplicates(['sq_candidate'], keep='last')
 
-            if not df3.empty:
-                final = df3.sort_values(
+            df4 = pd.read_sql("""
+            SELECT
+                sq_candidate,
+                format(sum(amount_goods_declared), 0, 'de_DE') as amount_goods_declared,
+                sum(amount_goods_declared) as amount_goods_declared_int
+            FROM raw_tse_cand_goods_declared
+                WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1
+                ORDER BY 3 DESC""".format(year, st), engine)
+
+            df5 = pd.merge(df3, df4, on='sq_candidate', how='inner')
+
+            if not df5.empty:
+                final = df5.sort_values(
                     by=['qt_votes_nominal'],
                     inplace=False,
                     ascending=False)

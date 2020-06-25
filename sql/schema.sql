@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS raw_tse_cand_goods_declared (
   cd_type_cand_goods_declared MEDIUMINT NOT NULL,
   ds_type_cand_goods_declared VARCHAR(500) NOT NULL,
   ds_cand_goods_declared VARCHAR(500) NOT NULL,
-  amount_goods_declared VARCHAR(100) NOT NULL,
+  amount_goods_declared INT NOT NULL,
   dt_tse_last_update DATE NOT NULL,
   hh_tse_last_update TIME NOT NULL,
   end_partition TIMESTAMP NOT NULL,
@@ -308,6 +308,8 @@ CREATE TABLE IF NOT EXISTS cand_info (
   qt_votes_nominal_int INT,
   ds_election TEXT,
   sq_alliance BIGINT,
+  amount_goods_declared TEXT,
+  amount_goods_declared_int INT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY (cand_info_id)

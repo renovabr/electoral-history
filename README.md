@@ -30,12 +30,13 @@ This project uses the following technologies:
 
 Three tables are created in the database called (*electoral_history*) to store the data. Are they:
 
-| Table                      | Lines      | Description
-| -------------------------- | ---------- |------------------------------------- | 
-| raw_tse_consult_candidates | 10.600.43  | Contains all candidates.             |
-| raw_tse_voting_cand_city   | 20.7102.63 | Contains candidate votes by city.    |
-| raw_tse_voting_party_city  | 16.044.42  | Contains party votes by city.        |
-| cand_info                  | 9.653.50   | Merge with candidate information.    |
+| Table                       | Lines      | Description
+| --------------------------- | ---------- |---------------------------------------- | 
+| raw_tse_consult_candidates  | 10.600.43  | Contains all candidates.                |
+| raw_tse_voting_cand_city    | 20.7102.63 | Contains candidate votes by city.       |
+| raw_tse_voting_party_city   | 16.044.42  | Contains party votes by city.           |
+| raw_tse_cand_goods_declared |            | Contains the goods declared candidates. |
+| cand_info                   | 9.653.50   | Merge with candidate information.       |
 
 ### Requeriments
 
