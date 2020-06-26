@@ -115,19 +115,20 @@ def main(argv):
 
     tic()
 
-    shift = 2
+    shift = 1
 
     for st in STATES:
-        # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        #    WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
-
         df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE sg_uf = '{}' AND nm_city="RIO DE JANEIRO" GROUP BY 1 ORDER BY 1""".format(st), engine)
+            WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
+
+        # df = pd.read_sql("""SELECT nm_city FROM cand_info
+        # WHERE sg_uf = '{}' AND nm_city="RIO DE JANEIRO" GROUP BY 1 ORDER BY
+        # 1""".format(st), engine)
 
         print('Reading candidates for vice-mayor of all cities in the state of:', st)
 
         dfcount = df['nm_city'].count()
-        # bar = Bar('Progress', max=dfcount)
+        bar = Bar('Progress', max=dfcount)
 
         for ct in df['nm_city'].tolist():
             if year == '2016' or year == '2012':
@@ -181,11 +182,11 @@ def main(argv):
                 # df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
 
                 if shift == 1:
-                    print('AAA')
+                    # print('1')
                     if any(df4['ds_situ_tot_shift'] == '2º TURNO'):
                         df4 = df4.where(df4["ds_situ_tot_shift"] != '2º TURNO')
                 elif shift == 2:
-                    print('BBBBB')
+                    # print('2')
                     # print(df4)
                     # print(df4['ds_situ_tot_shift'])
                     # df = df4.where(df4['sq_candidate'] == df4['sq_candidate'])
@@ -219,8 +220,8 @@ def main(argv):
                         index_label=TABLE_NAME_ID)
             else:
                 raise ValueError('Invalid year')
-            # bar.next()
-        # bar.finish()
+            bar.next()
+        bar.finish()
 
     toc()
 
