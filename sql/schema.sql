@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS raw_tse_cand_goods_declared (
   cd_type_cand_goods_declared MEDIUMINT NOT NULL,
   ds_type_cand_goods_declared VARCHAR(500) NOT NULL,
   ds_cand_goods_declared VARCHAR(500) NOT NULL,
-  amount_goods_declared BIGINT NOT NULL DEFAULT 0,
+  amount_goods_declared FLOAT,
   dt_tse_last_update DATE NOT NULL,
   hh_tse_last_update TIME NOT NULL,
   end_partition TIMESTAMP NOT NULL,

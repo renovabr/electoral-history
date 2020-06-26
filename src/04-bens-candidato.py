@@ -109,8 +109,11 @@ def main(argv):
         df1['hh_tse_last_update'] = pd.to_datetime(
             df1['hh_tse_last_update'], format='%H:%M:%S').dt.time
 
-        df1['amount_goods_declared'] = df1['amount_goods_declared'].astype(
-            'str')
+        print(df1['amount_goods_declared'])
+
+        df1['amount_goods_declared'] = df1['amount_goods_declared'].str.replace(',','.').astype('float')
+
+        print(df1['amount_goods_declared'])
 
         cols = ','.join([str(i) for i in df1.columns.tolist()])
         bar = Bar('Progress', max=dfcount)
