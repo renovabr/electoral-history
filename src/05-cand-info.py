@@ -141,7 +141,7 @@ def main(argv):
             SELECT
                 sq_candidate,
                 format(sum(amount_goods_declared), 0, 'de_DE') as amount_goods_declared,
-                sum(amount_goods_declared) as amount_goods_declared_int
+                sum(amount_goods_declared) as amount_goods_declared_float
             FROM raw_tse_cand_goods_declared
                 WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1
                 ORDER BY 3 DESC""".format(year, st), engine)
@@ -166,7 +166,7 @@ def main(argv):
                     index=False,
                     index_label=TABLE_NAME_ID)
             else:
-                raise ValueError('The dataframe is empty...')
+                print('The dataframe is empty for shift:', shitf)
 
     toc()
 

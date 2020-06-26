@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS cand_info (
   ds_election TEXT,
   sq_alliance BIGINT,
   amount_goods_declared TEXT,
-  amount_goods_declared_int INT,
+  amount_goods_declared_float FLOAT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY (cand_info_id)
