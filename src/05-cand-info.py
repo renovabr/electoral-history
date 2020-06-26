@@ -148,25 +148,27 @@ def main(argv):
 
             df5 = pd.merge(df3, df4, on='sq_candidate', how='inner')
 
-            if not df5.empty:
-                final = df5.sort_values(
-                    by=['qt_votes_nominal'],
-                    inplace=False,
-                    ascending=False)
+            if df5.empty:
+                df3['amount_goods_declared'] = ''
+                df3['amount_goods_declared_float'] = 0
+                df5 = df3
 
-                if ext:
-                    print('Write/append data in CSV file:', ext)
-                    write_to_csv(final)
+            final = df5.sort_values(
+                by=['qt_votes_nominal'],
+                inplace=False,
+                ascending=False)
 
-                print('Inserting the data in table:', TABLE_NAME)
-                final.to_sql(
-                    con=engine,
-                    name=TABLE_NAME,
-                    if_exists='append',
-                    index=False,
-                    index_label=TABLE_NAME_ID)
-            else:
-                print('The dataframe is empty for shift:', shitf)
+            if ext:
+                print('Write/append data in CSV file:', ext)
+                write_to_csv(final)
+
+            print('Inserting the data in table:', TABLE_NAME)
+            final.to_sql(
+                con=engine,
+                name=TABLE_NAME,
+                if_exists='append',
+                index=False,
+                index_label=TABLE_NAME_ID)
 
     toc()
 
