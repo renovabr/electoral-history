@@ -20,6 +20,16 @@ function run_raw_data() {
   cd -
 }
 
+while true; 
+do
+  read -p "The data import process can take hours. Would you like to start now? " yn
+  case $yn in
+    [Yy]*) break;;
+    [Nn]*) exit;;
+    *) echo "Please answer yes or no.";;
+  esac
+done
+
 if [ $# -gt 0 ]; then
   if [ "${1}" == "consulta-cand" ]; then
     run_raw_data "01-consulta-cand.py" "consulta_cand_"

@@ -6,6 +6,7 @@ import datetime as dt
 import os.path
 import sys
 import getopt
+from progress.bar import Bar
 from config import mysql_user, mysql_password
 from config import mysql_host, mysql_database, mysql_port
 from utils import STATES, CAPITALS
@@ -28,15 +29,15 @@ def write_to_csv(df, output='data.csv'):
 
 def main(argv):
     global STATES
-    year, state, ext = (None, None, None)
-    usage = '04-cand-info.py -y 2016 -s SC -e data.csv'
+    year, state, ext, shift = (None, None, None, None)
+    usage = '05-cand-info.py -y 2016 -s SC -t 1 or 2 -e data.csv'
 
     try:
         opts, _args = getopt.getopt(
-            argv, 'hy:s:e:', ['year=', 'state=', 'ext='])
+            argv, 'hy:s:t:e:', ['year=', 'state=', 'shift=', 'ext='])
     except getopt.GetoptError:
         print(usage)
-        sys.exit(2)
+        sys.exit()
     for opt, arg in opts:
         if opt == '-h':
             print(usage)
@@ -45,6 +46,8 @@ def main(argv):
             year = arg
         elif opt in ('-s', '--state'):
             state = arg
+        elif opt in ('-t', '--shift'):
+            shift = arg
         elif opt in ('-e', '--ext='):
             ext = arg
 
@@ -53,20 +56,29 @@ def main(argv):
             STATES.remove('DF')
     else:
         print('Year is invalid!')
+        print(usage)
         sys.exit()
 
     if state:
         STATES = list(filter(lambda x: x == str(state), STATES))
+
+    if not shift:
+        print('The shift number is required! 1 or 2 shift.')
+        sys.exit()
+    else:
+        shift = int(shift)
 
     engine = create_engine(DATABASE, echo=False)
 
     tic()
 
     for st in STATES:
-        print('Read canditates: ' + st)
+        print('Reading candidates for the state:', st, 'shift:', shift)
+
+        bar = Bar('Progress', max=100)
 
         df0 = pd.read_sql("""
-          SELECT
+        SELECT
             election_year,
             sg_uf,
             sq_candidate,
@@ -85,90 +97,86 @@ def main(argv):
             nr_shift,
             ds_election,
             sq_alliance
-          FROM raw_tse_consult_candidates
+        FROM raw_tse_consult_candidates
             WHERE election_year = '{}' AND sg_uf = '{}'""".format(year, st), engine)
 
+        bar.next(25)
+
         df0 = df0.applymap(lambda s: s.upper() if isinstance(s, str) else s)
+        df1 = pd.DataFrame()
 
-        df = pd.read_sql("""SELECT nr_shift FROM raw_tse_voting_cand_city
-            WHERE sg_uf = '{}' GROUP BY 1""".format(st), engine)
-
-        for shitf in df['nr_shift'].tolist():
-            print('Shift number: ' + str(shitf))
-            df1 = 0
-
-            if year == '2016' or year == '2012':
-                print('Regional election')
-                df1 = pd.read_sql("""
-                SELECT
-                    sq_candidate,
-                    nm_ballot_candidate,
-                    ds_position,
-                    ds_situ_tot_shift,
-                    nm_city,
-                    ds_situ_cand,
-                    format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
-                    sum(qt_votes_nominal) AS qt_votes_nominal_int
-                FROM raw_tse_voting_cand_city
-                    WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
-                    GROUP BY 1, 2, 3, 4, 5, 6
-                    ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shitf), engine)
-            else:
-                print('National and state election')
-                df1 = pd.read_sql("""
-                SELECT
-                    sq_candidate,
-                    nm_ballot_candidate,
-                    ds_position,
-                    ds_situ_tot_shift,
-                    ds_situ_cand,
-                    format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
-                    sum(qt_votes_nominal) AS qt_votes_nominal_int
-                FROM raw_tse_voting_cand_city
-                    WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
-                    GROUP BY 1, 2, 3, 4, 5
-                    ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shitf), engine)
-                df1['nm_city'] = CAPITALS[st]
-
-            df1 = df1.applymap(
-                lambda s: s.upper() if isinstance(
-                    s, str) else s)
-
-            df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
-            df3 = df2.drop_duplicates(['sq_candidate'], keep='last')
-
-            df4 = pd.read_sql("""
+        if year == '2016' or year == '2012':
+            df1 = pd.read_sql("""
             SELECT
                 sq_candidate,
-                format(sum(amount_goods_declared), 0, 'de_DE') as amount_goods_declared,
-                sum(amount_goods_declared) as amount_goods_declared_float
-            FROM raw_tse_cand_goods_declared
-                WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1
-                ORDER BY 3 DESC""".format(year, st), engine)
+                nm_ballot_candidate,
+                ds_position,
+                ds_situ_tot_shift,
+                nm_city,
+                ds_situ_cand,
+                format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
+                sum(qt_votes_nominal) AS qt_votes_nominal_int
+            FROM raw_tse_voting_cand_city
+                WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
+                GROUP BY 1, 2, 3, 4, 5, 6
+                ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shift), engine)
+        else:
+            df1 = pd.read_sql("""
+            SELECT
+                sq_candidate,
+                nm_ballot_candidate,
+                ds_position,
+                ds_situ_tot_shift,
+                ds_situ_cand,
+                format(sum(qt_votes_nominal), 0, 'de_DE') as qt_votes_nominal,
+                sum(qt_votes_nominal) AS qt_votes_nominal_int
+            FROM raw_tse_voting_cand_city
+                WHERE election_year = '{}' AND sg_uf = '{}' AND nr_shift = '{}'
+                GROUP BY 1, 2, 3, 4, 5
+                ORDER BY sum(qt_votes_nominal) DESC""".format(year, st, shift), engine)
+            df1['nm_city'] = CAPITALS[st]
 
-            df5 = pd.merge(df3, df4, on='sq_candidate', how='inner')
+        bar.next(25)
+        df1 = df1.applymap(lambda s: s.upper() if isinstance(s, str) else s)
 
-            if df5.empty:
-                df3['amount_goods_declared'] = ''
-                df3['amount_goods_declared_float'] = 0
-                df5 = df3
+        df2 = pd.merge(df0, df1, on='sq_candidate', how='inner')
+        df3 = df2.drop_duplicates(['sq_candidate'], keep='last')
 
-            final = df5.sort_values(
-                by=['qt_votes_nominal'],
-                inplace=False,
-                ascending=False)
+        df4 = pd.read_sql("""
+        SELECT
+            sq_candidate,
+            format(sum(amount_goods_declared), 0, 'de_DE') as amount_goods_declared,
+            sum(amount_goods_declared) as amount_goods_declared_float
+        FROM raw_tse_cand_goods_declared
+            WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1
+            ORDER BY 3 DESC""".format(year, st), engine)
 
-            if ext:
-                print('Write/append data in CSV file:', ext)
-                write_to_csv(final)
+        bar.next(25)
+        df5 = pd.merge(df3, df4, on='sq_candidate', how='inner')
 
-            print('Inserting the data in table:', TABLE_NAME)
-            final.to_sql(
-                con=engine,
-                name=TABLE_NAME,
-                if_exists='append',
-                index=False,
-                index_label=TABLE_NAME_ID)
+        if df5.empty:
+            df3['amount_goods_declared'] = ''
+            df3['amount_goods_declared_float'] = 0
+            df5 = df3
+
+        final = df5.sort_values(
+            by=['qt_votes_nominal'],
+            inplace=False,
+            ascending=False)
+
+        if ext:
+            write_to_csv(final)
+
+        bar.next(25)
+
+        final.to_sql(
+            con=engine,
+            name=TABLE_NAME,
+            if_exists='append',
+            index=False,
+            index_label=TABLE_NAME_ID)
+
+        bar.finish()
 
     toc()
 

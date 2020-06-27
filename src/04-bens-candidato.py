@@ -23,7 +23,7 @@ def main(argv):
                 'year=', 'path=', 'ext=', 'state='])
     except getopt.GetoptError:
         print(usage)
-        sys.exit(2)
+        sys.exit()
     for opt, arg in opts:
         if opt == '-h':
             print(usage)
@@ -42,6 +42,7 @@ def main(argv):
             STATES.remove('DF')
     else:
         print('Year is invalid!')
+        print(usage)
         sys.exit()
 
     if not os.path.isdir(path):

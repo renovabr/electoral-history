@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+YEARS=("2010" "2012" "2014" "2016" "2018")
+
+function run_cand_info_vices() {
+  shift="${1}"
+  cd src
+  for i in "${YEARS[@]}"
+  do
+    python3 05-cand-info-vices.py -y ${i} -t ${shift}
+  done
+}
+
+while true; 
+do
+  read -p "The data merge process can take hours. Would you like to start now? " yn
+  case $yn in
+    [Yy]*) run_cand_info_vices "1"; run_cand_info_vices "2"; break;;
+    [Nn]*) exit;;
+    *) echo "Please answer yes or no.";;
+  esac
+done
+
+exit 0

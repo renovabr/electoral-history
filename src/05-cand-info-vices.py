@@ -82,15 +82,15 @@ def write_to_csv(df, output='data.csv'):
 
 def main(argv):
     global STATES
-    year, state, ext = (None, None, None)
-    usage = '05-cand-info-vices.py -y 2016 -s SC -e data.csv'
+    year, state, ext, shift = (None, None, None, None)
+    usage = '05-cand-info-vices.py -y 2016 -s SC -t 1 or 2 -e data.csv'
 
     try:
         opts, _args = getopt.getopt(
-            argv, 'hy:s:e:', ['year=', 'state=', 'ext='])
+            argv, 'hy:s:t:e:', ['year=', 'state=', 'shift=', 'ext='])
     except getopt.GetoptError:
         print(usage)
-        sys.exit(2)
+        sys.exit()
     for opt, arg in opts:
         if opt == '-h':
             print(usage)
@@ -99,6 +99,8 @@ def main(argv):
             year = arg
         elif opt in ('-s', '--state'):
             state = arg
+        elif opt in ('-t', '--shift'):
+            shift = arg
         elif opt in ('-e', '--ext='):
             ext = arg
 
@@ -106,26 +108,31 @@ def main(argv):
         STATES.remove('DF')
     else:
         print('Year is invalid!')
+        print(usage)
         sys.exit()
 
     if state:
         STATES = list(filter(lambda x: x == str(state), STATES))
 
+    if not shift:
+        print('The shift number is required! 1 or 2 shift.')
+        sys.exit()
+    else:
+        shift = int(shift)
+
     engine = create_engine(DATABASE, echo=False)
 
     tic()
-
-    shift = 1
 
     for st in STATES:
         df = pd.read_sql("""SELECT nm_city FROM cand_info
             WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
 
-        # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        # WHERE sg_uf = '{}' AND nm_city="RIO DE JANEIRO" GROUP BY 1 ORDER BY
-        # 1""".format(st), engine)
-
-        print('Reading candidates for vice-mayor of all cities in the state of:', st)
+        print(
+            'Reading candidates for vice-mayor of all cities in the state of:',
+            st,
+            'shift:',
+            shift)
 
         dfcount = df['nm_city'].count()
         bar = Bar('Progress', max=dfcount)
@@ -172,28 +179,39 @@ def main(argv):
                         AND ds_position = 'PREFEITO'""".format(st, ct), engine)
 
                 df2 = pd.merge(df1, df0, on='sq_alliance', how='inner')
-
                 df3 = df2[COLS_XY]
 
                 df4 = df3.rename(columns=COLS_XY_NEW, inplace=False)
                 df4 = df4.applymap(
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
-                # df4 = df4.drop_duplicates(['sq_candidate'], keep='last')
 
                 if shift == 1:
-                    # print('1')
                     if any(df4['ds_situ_tot_shift'] == '2º TURNO'):
-                        df4 = df4.where(df4["ds_situ_tot_shift"] != '2º TURNO')
+                        df4 = df4.where(df4['ds_situ_tot_shift'] != '2º TURNO')
+                    if any(df4['ds_situ_tot_shift'] == '#NULO#'):
+                        df4.loc[df4['ds_situ_tot_shift'] == '#NULO#',
+                                ['ds_situ_tot_shift']] = 'NÃO ELEITO'
+
                 elif shift == 2:
-                    # print('2')
-                    # print(df4)
-                    # print(df4['ds_situ_tot_shift'])
-                    # df = df4.where(df4['sq_candidate'] == df4['sq_candidate'])
-                    df = df4['sq_candidate'].equals(df4['sq_candidate'])
-                    if df:
-                        print(df4['sq_candidate'])
-                    pass
+                    if not df4.empty:
+                        rank = df4['qt_votes_nominal_int'].nlargest(4).tolist()
+
+                        for i in range(len(rank)):
+                            if i == 0:
+                                df4.loc[df4['qt_votes_nominal_int'] == rank[0], [
+                                    'ds_situ_tot_shift']] = 'ELEITO'
+                            if i == 1:
+                                df4.loc[df4['qt_votes_nominal_int'] == rank[1], [
+                                    'ds_situ_tot_shift']] = 'NÃO ELEITO'
+                            if i == 2:
+                                df4.loc[df4['qt_votes_nominal_int'] == rank[2], [
+                                    'ds_situ_tot_shift']] = '2º TURNO'
+                            if i == 3:
+                                df4.loc[df4['qt_votes_nominal_int'] == rank[3], [
+                                    'ds_situ_tot_shift']] = '2º TURNO'
+                    else:
+                        pass
 
                 df5 = pd.read_sql("""SELECT * FROM cand_info
                     WHERE sg_uf = '{}' AND nm_city = "{}"
@@ -203,8 +221,24 @@ def main(argv):
                     if any(df5['sq_candidate'] == i):
                         df4 = df4[df4['sq_candidate'] != i]
 
-                if not df4.empty:
-                    final = df4.sort_values(
+                df6 = pd.read_sql("""
+                SELECT
+                    sq_candidate,
+                    format(sum(amount_goods_declared), 0, 'de_DE') as amount_goods_declared,
+                    sum(amount_goods_declared) as amount_goods_declared_float
+                FROM raw_tse_cand_goods_declared
+                    WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1
+                    ORDER BY 3 DESC""".format(year, st), engine)
+
+                df7 = pd.merge(df4, df6, on='sq_candidate', how='inner')
+
+                if df7.empty:
+                    df4['amount_goods_declared'] = ''
+                    df4['amount_goods_declared_float'] = 0
+                    df7 = df4
+
+                if not df7.empty:
+                    final = df7.sort_values(
                         by=['qt_votes_nominal'],
                         inplace=False,
                         ascending=False)
