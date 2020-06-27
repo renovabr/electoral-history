@@ -1,30 +1,18 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import pandas as pd
-import datetime as dt
-import os.path
 import sys
 import getopt
 from progress.bar import Bar
 from config import mysql_user, mysql_password
 from config import mysql_host, mysql_database, mysql_port
-from utils import STATES, CAPITALS
-from utils import tic, toc
 from sqlalchemy import create_engine
+from utils import STATES, CAPITALS
+from utils import CAND_TABLE_NAME, CAND_TABLE_NAME_ID
+from utils import tic, toc, write_to_csv
 
 DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + \
     '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
-
-TABLE_NAME = 'cand_info'
-TABLE_NAME_ID = 'cand_info_id'
-
-
-def write_to_csv(df, output='data.csv'):
-    if os.path.isfile(output):
-        df.to_csv(output, mode='a', index=False, sep=",", header=False)
-    else:
-        df.to_csv(output, index=False, sep=",")
 
 
 def main(argv):
@@ -171,10 +159,10 @@ def main(argv):
 
         final.to_sql(
             con=engine,
-            name=TABLE_NAME,
+            name=CAND_TABLE_NAME,
             if_exists='append',
             index=False,
-            index_label=TABLE_NAME_ID)
+            index_label=CAND_TABLE_NAME_ID)
 
         bar.finish()
 

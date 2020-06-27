@@ -12,6 +12,9 @@ DATABASE = {
     'raise_on_warnings': mysql_raise_on_warnings()
 }
 
+CAND_TABLE_NAME = 'cand_info'
+CAND_TABLE_NAME_ID = 'cand_info_id'
+
 TIC_TIME_START = 0
 
 STATES = [
@@ -426,6 +429,59 @@ COLS_GOODS_DECLARED = [
     'hh_tse_last_update'
 ]
 
+COLS_VICES_XY = [
+    'election_year_x',
+    'sg_uf_x',
+    'sq_candidate_y',
+    'nr_cpf_candidate_y',
+    'nm_candidate_y',
+    'sg_party_y',
+    'nr_party_y',
+    'nm_ballot_candidate_y',
+    'ds_position_y',
+    'ds_situ_tot_shift_y',
+    'nm_city_x',
+    'ds_situ_cand_y',
+    'nm_email_y',
+    'ds_genre_y',
+    'ds_degree_instruction_y',
+    'ds_race_color_y',
+    'ds_occupation_y',
+    'nr_campaign_max_expenditure_y',
+    'st_reelection_y',
+    'dt_birth_y',
+    'nr_shift_y',
+    'qt_votes_nominal',
+    'qt_votes_nominal_int',
+    'ds_election_y',
+    'sq_alliance'
+]
+
+COLS_VICES_XY_NEW = {
+    'election_year_x': 'election_year',
+    'sg_uf_x': 'sg_uf',
+    'sq_candidate_y': 'sq_candidate',
+    'nr_cpf_candidate_y': 'nr_cpf_candidate',
+    'nm_candidate_y': 'nm_candidate',
+    'sg_party_y': 'sg_party',
+    'nr_party_y': 'nr_party',
+    'nm_ballot_candidate_y': 'nm_ballot_candidate',
+    'ds_position_y': 'ds_position',
+    'ds_situ_tot_shift_y': 'ds_situ_tot_shift',
+    'nm_city_x': 'nm_city',
+    'ds_situ_cand_y': 'ds_situ_cand',
+    'nm_email_y': 'nm_email',
+    'ds_genre_y': 'ds_genre',
+    'ds_degree_instruction_y': 'ds_degree_instruction',
+    'ds_race_color_y': 'ds_race_color',
+    'ds_occupation_y': 'ds_occupation',
+    'nr_campaign_max_expenditure_y': 'nr_campaign_max_expenditure',
+    'st_reelection_y': 'st_reelection',
+    'dt_birth_y': 'dt_birth',
+    'nr_shift_y': 'nr_shift',
+    'ds_election_y': 'ds_election'
+}
+
 
 def standardize_df_cand(df, year):
     df['type_election'] = 0
@@ -660,3 +716,11 @@ def toc():
     minutes = temp // 60
     seconds = temp - 60 * minutes
     print('\n%d:%d:%d' % (hours, minutes, seconds))
+
+
+def write_to_csv(df, output='data.csv'):
+    import os.path
+    if os.path.isfile(output):
+        df.to_csv(output, mode='a', index=False, sep=",", header=False)
+    else:
+        df.to_csv(output, index=False, sep=",")

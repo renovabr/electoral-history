@@ -1,83 +1,18 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import pandas as pd
-import datetime as dt
-import os.path
 import sys
 import getopt
 from progress.bar import Bar
 from config import mysql_user, mysql_password
 from config import mysql_host, mysql_database, mysql_port
-from utils import STATES, CAPITALS
-from utils import tic, toc
 from sqlalchemy import create_engine
+from utils import STATES, CAPITALS, COLS_VICES_XY, COLS_VICES_XY_NEW
+from utils import CAND_TABLE_NAME, CAND_TABLE_NAME_ID
+from utils import tic, toc, write_to_csv
 
 DATABASE = 'mysql+mysqlconnector://' + mysql_user() + ':' + mysql_password() + \
     '@' + mysql_host() + ':' + mysql_port() + '/' + mysql_database()
-
-TABLE_NAME = 'cand_info'
-TABLE_NAME_ID = 'cand_info_id'
-
-COLS_XY = [
-    'election_year_x',
-    'sg_uf_x',
-    'sq_candidate_y',
-    'nr_cpf_candidate_y',
-    'nm_candidate_y',
-    'sg_party_y',
-    'nr_party_y',
-    'nm_ballot_candidate_y',
-    'ds_position_y',
-    'ds_situ_tot_shift_y',
-    'nm_city_x',
-    'ds_situ_cand_y',
-    'nm_email_y',
-    'ds_genre_y',
-    'ds_degree_instruction_y',
-    'ds_race_color_y',
-    'ds_occupation_y',
-    'nr_campaign_max_expenditure_y',
-    'st_reelection_y',
-    'dt_birth_y',
-    'nr_shift_y',
-    'qt_votes_nominal',
-    'qt_votes_nominal_int',
-    'ds_election_y',
-    'sq_alliance'
-]
-
-COLS_XY_NEW = {
-    'election_year_x': 'election_year',
-    'sg_uf_x': 'sg_uf',
-    'sq_candidate_y': 'sq_candidate',
-    'nr_cpf_candidate_y': 'nr_cpf_candidate',
-    'nm_candidate_y': 'nm_candidate',
-    'sg_party_y': 'sg_party',
-    'nr_party_y': 'nr_party',
-    'nm_ballot_candidate_y': 'nm_ballot_candidate',
-    'ds_position_y': 'ds_position',
-    'ds_situ_tot_shift_y': 'ds_situ_tot_shift',
-    'nm_city_x': 'nm_city',
-    'ds_situ_cand_y': 'ds_situ_cand',
-    'nm_email_y': 'nm_email',
-    'ds_genre_y': 'ds_genre',
-    'ds_degree_instruction_y': 'ds_degree_instruction',
-    'ds_race_color_y': 'ds_race_color',
-    'ds_occupation_y': 'ds_occupation',
-    'nr_campaign_max_expenditure_y': 'nr_campaign_max_expenditure',
-    'st_reelection_y': 'st_reelection',
-    'dt_birth_y': 'dt_birth',
-    'nr_shift_y': 'nr_shift',
-    'ds_election_y': 'ds_election'
-}
-
-
-def write_to_csv(df, output='data.csv'):
-    if os.path.isfile(output):
-        df.to_csv(output, mode='a', index=False, sep=",", header=False)
-    else:
-        df.to_csv(output, index=False, sep=",")
 
 
 def main(argv):
@@ -179,9 +114,9 @@ def main(argv):
                         AND ds_position = 'PREFEITO'""".format(st, ct), engine)
 
                 df2 = pd.merge(df1, df0, on='sq_alliance', how='inner')
-                df3 = df2[COLS_XY]
+                df3 = df2[COLS_VICES_XY]
 
-                df4 = df3.rename(columns=COLS_XY_NEW, inplace=False)
+                df4 = df3.rename(columns=COLS_VICES_XY_NEW, inplace=False)
                 df4 = df4.applymap(
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
@@ -248,10 +183,10 @@ def main(argv):
 
                     final.to_sql(
                         con=engine,
-                        name=TABLE_NAME,
+                        name=CAND_TABLE_NAME,
                         if_exists='append',
                         index=False,
-                        index_label=TABLE_NAME_ID)
+                        index_label=CAND_TABLE_NAME_ID)
             else:
                 raise ValueError('Invalid year')
             bar.next()
