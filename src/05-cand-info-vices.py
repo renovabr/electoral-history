@@ -63,7 +63,8 @@ def main(argv):
             (year, st, shift))
 
         # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        #    WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
+        # WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1 ORDER BY
+        # 1""".format(year, st), engine)
 
         df = pd.read_sql("""SELECT nm_city FROM cand_info
             WHERE election_year = '{}' AND sg_uf = '{}' AND nm_city = 'OSASCO' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
@@ -129,9 +130,12 @@ def main(argv):
 
                 elif int(shift) == 2:
                     if not df4.empty:
-                        df4.sort_values(by=['ds_situ_tot_shift'], inplace=False, ascending=False)
+                        df4.sort_values(
+                            by=['ds_situ_tot_shift'],
+                            inplace=False,
+                            ascending=False)
                         rank = df4['qt_votes_nominal_int'].nlargest(4).tolist()
-                        
+
                         for i in range(len(rank)):
                             if i == 0:
                                 df4.loc[df4['qt_votes_nominal_int'] == rank[0], [
