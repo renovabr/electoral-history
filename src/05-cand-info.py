@@ -53,15 +53,15 @@ def main(argv):
     if not shift:
         print('The shift number is required! 1 or 2 shift.')
         sys.exit()
-    else:
-        shift = int(shift)
 
     engine = create_engine(DATABASE, echo=False)
 
     tic()
 
     for st in STATES:
-        print('Reading candidates for the state:', st, 'shift:', shift)
+        print(
+            'Reading candidates (%s) for the state: %s in shift: %s' %
+            (year, st, shift))
 
         bar = Bar('Progress', max=100)
 

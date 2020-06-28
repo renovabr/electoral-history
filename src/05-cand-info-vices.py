@@ -52,22 +52,21 @@ def main(argv):
     if not shift:
         print('The shift number is required! 1 or 2 shift.')
         sys.exit()
-    else:
-        shift = int(shift)
 
     engine = create_engine(DATABASE, echo=False)
 
     tic()
 
     for st in STATES:
-        df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(st), engine)
-
         print(
-            'Reading candidates for vice-mayor of all cities in the state of:',
-            st,
-            'shift:',
-            shift)
+            'Reading candidates (%s) for vice-mayor of all cities in the state of: %s in shift: %s' %
+            (year, st, shift))
+
+        # df = pd.read_sql("""SELECT nm_city FROM cand_info
+        #    WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
+
+        df = pd.read_sql("""SELECT nm_city FROM cand_info
+            WHERE election_year = '{}' AND sg_uf = '{}' AND nm_city = 'OSASCO' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
 
         dfcount = df['nm_city'].count()
         bar = Bar('Progress', max=dfcount)
@@ -111,7 +110,7 @@ def main(argv):
 
                 df1 = pd.read_sql("""SELECT * FROM cand_info
                     WHERE sg_uf = '{}' AND nm_city = "{}"
-                        AND ds_position = 'PREFEITO'""".format(st, ct), engine)
+                        AND ds_position = 'PREFEITO' ORDER BY qt_votes_nominal_int DESC""".format(st, ct), engine)
 
                 df2 = pd.merge(df1, df0, on='sq_alliance', how='inner')
                 df3 = df2[COLS_VICES_XY]
@@ -121,27 +120,28 @@ def main(argv):
                     lambda s: s.upper() if isinstance(
                         s, str) else s)
 
-                if shift == 1:
+                if int(shift) == 1:
                     if any(df4['ds_situ_tot_shift'] == '2º TURNO'):
                         df4 = df4.where(df4['ds_situ_tot_shift'] != '2º TURNO')
                     if any(df4['ds_situ_tot_shift'] == '#NULO#'):
                         df4.loc[df4['ds_situ_tot_shift'] == '#NULO#',
                                 ['ds_situ_tot_shift']] = 'NÃO ELEITO'
 
-                elif shift == 2:
+                elif int(shift) == 2:
                     if not df4.empty:
+                        df4.sort_values(by=['ds_situ_tot_shift'], inplace=False, ascending=False)
                         rank = df4['qt_votes_nominal_int'].nlargest(4).tolist()
-
+                        
                         for i in range(len(rank)):
                             if i == 0:
                                 df4.loc[df4['qt_votes_nominal_int'] == rank[0], [
                                     'ds_situ_tot_shift']] = 'ELEITO'
                             if i == 1:
                                 df4.loc[df4['qt_votes_nominal_int'] == rank[1], [
-                                    'ds_situ_tot_shift']] = 'NÃO ELEITO'
+                                    'ds_situ_tot_shift']] = '2º TURNO'
                             if i == 2:
                                 df4.loc[df4['qt_votes_nominal_int'] == rank[2], [
-                                    'ds_situ_tot_shift']] = '2º TURNO'
+                                    'ds_situ_tot_shift']] = 'NÃO ELEITO'
                             if i == 3:
                                 df4.loc[df4['qt_votes_nominal_int'] == rank[3], [
                                     'ds_situ_tot_shift']] = '2º TURNO'
