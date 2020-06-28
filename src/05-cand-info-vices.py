@@ -62,12 +62,12 @@ def main(argv):
             'Reading candidates (%s) for vice-mayor of all cities in the state of: %s in shift: %s' %
             (year, st, shift))
 
-        # df = pd.read_sql("""SELECT nm_city FROM cand_info
-        # WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1 ORDER BY
-        # 1""".format(year, st), engine)
-
         df = pd.read_sql("""SELECT nm_city FROM cand_info
-            WHERE election_year = '{}' AND sg_uf = '{}' AND nm_city = 'OSASCO' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
+            WHERE election_year = '{}' AND sg_uf = '{}' GROUP BY 1 ORDER BY 1""".format(year, st), engine)
+
+        # df = pd.read_sql("""SELECT nm_city FROM cand_info
+        # WHERE election_year = '{}' AND sg_uf = '{}' AND nm_city = 'OSASCO'
+        # GROUP BY 1 ORDER BY 1""".format(year, st), engine)
 
         dfcount = df['nm_city'].count()
         bar = Bar('Progress', max=dfcount)
