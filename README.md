@@ -8,7 +8,7 @@
 </a>
 </p>
 
-[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database, and then the data is placed in **Elasticsearch** using the ELK stack. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **24.340.098** million lines in the database.
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) project that collects data from the **Brazilian Electoral Data Repository** and imports it into a **MySQL** database, and then the data is placed in **Elasticsearch** using the ELK stack. Electoral years available: *2010, 2012, 2014, 2016, 2018*. The full import of every year totals **26.151.069** million lines in the database.
 
 ## Synopsis
 
