@@ -36,7 +36,7 @@ Three tables are created in the database called (*electoral_history*) to store t
 | raw_tse_voting_cand_city    | 20.7102.63 | Contains candidate votes by city.       |
 | raw_tse_voting_party_city   | 16.044.42  | Contains party votes by city.           |
 | raw_tse_cand_goods_declared | 21.302.42  | Contains the goods declared candidates. |
-| cand_info                   | 9.653.50   | Merge with candidate information.       |
+| cand_info                   | 6.460.79   | Merge with candidate information.       |
 
 ### Requeriments
 
