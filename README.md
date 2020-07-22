@@ -96,10 +96,10 @@ $ mysql -u root -p < sql/schema.sql
 
 #### 3. Import all data to MySQL 
 
-To import the candidates data for all years, use the script: **run-import-all**.
+To import the **candidates data** for all years, use the script: **run-import-all**.
 
 ```shell
-$ ./run-import-all 'consulta-cand'
+$ ./01-run-import-all 'consulta-cand'
 ```
 
 If you want to import a specific year and state you can use the command:
@@ -110,10 +110,10 @@ $ ./01-consulta-cand.py -y 2010 -s 'SP' \
   -p ../data/tse/2010/consulta_cand_2010/ -e txt
 ```
 
-The same procedure applies to the other tables. To import all candidates voting data, use the command:
+The same procedure applies to the other tables. To import all **candidates voting** data, use the command:
 
 ```shell
-$ ./run-import-all 'votacao-candidato'
+$ ./01-run-import-all 'votacao-candidato'
 ```
 
 If you want to import a specific year and state you can use the command:
@@ -124,10 +124,10 @@ $ ./02-votacao-candidato-munzona.py -y 2010 -s 'SP' -p \
   ../data/tse/2010/votacao_candidato_munzona_2010/ -e txt
 ```
 
-For the import of votes by party:
+For the import of **votes by party**:
 
 ```shell
-$ ./run-import-all 'votacao-partido'
+$ ./01-run-import-all 'votacao-partido'
 ```
 
 If you want to import a specific year and state you can use the command:
@@ -136,6 +136,20 @@ If you want to import a specific year and state you can use the command:
 $ cd src
 $ ./03-votacao-partido-munzona.py -y 2010 -s 'SC' \
   -p ../data/tse/2010/votacao_partido_munzona_2010/ -e txt
+```
+
+To import candidates' **declared goods**:
+
+```shell
+$ ./01-run-import-all 'bem-candidato'
+```
+
+If you want to import a specific year and state you can use the command:
+
+```shell
+$ cd src
+$ ./04-bens-candidato.py -y 2010 -s 'SC' \
+  -p ../data/tse/2010/bem_candidato_2010/ -e txt
 ```
 
 #### 4. Computing candidate votes and information 
