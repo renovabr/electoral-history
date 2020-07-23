@@ -154,30 +154,72 @@ $ ./04-bens-candidato.py -y 2010 -s 'SC' \
 
 #### 4. Computing candidate votes and information 
 
-This table is a merge with the candidate base and the voting base by zone.
+This table is a junction of candidate data with the voting base.
+
+For the import of all years:
+
+```shell
+$ ./02-run-cand-info
+```
+
+>Note: The script automatically imports data from the shift 1 and after the shift 2.
+
+If you want a specific year, shift 1:
 
 ```shell
 $ cd src
-$ ./04-cand-info.py -y 2010 
+$ ./05-cand-info.py -y 2010 -t 1
+```
+
+Same year for shift 2:
+
+```shell
+$ cd src
+$ ./05-cand-info.py -y 2010 -t 2
 ```
 
 If you want to listen to only one state and save it in a CSV file, use the command:
 
 ```shell
 $ cd src
-$ ./04-cand-info.py -y 2018 -s SC -e data.csv
+$ ./05-cand-info.py -y 2016 -t 1 -s SP -e data.csv
 ```
 
-To process every year use the command:
+Or to process every year use the command:
 
 ```shell
 $ cd src
-$ for i in "2010" "2012" "2014" "2016" "2018"; do ./04-cand-info.py -y ${i}; done
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./04-cand-info.py -y ${i} -t 1; done
+$ for i in "2010" "2012" "2014" "2016" "2018"; do ./04-cand-info.py -y ${i} -t 2; done
 ```
 
 The script must be executed per year and the results are saved in table *cand_info*
 
-#### 5. Checking and analyzing data 
+#### 5. Processing Vice-mayor Data 
+
+To process the number of votes and other information for vice-mayor positions, it is necessary to use the script: 
+
+```shell
+$ ./03-run-cand-info-vices
+```
+
+>Note: The script automatically imports data from the shift 1 and after the shift 2.
+
+If you want a specific year, shift 1:
+
+```shell
+$ cd src
+$ ./05-cand-info-vices.py -y 2010 -t 1
+```
+
+Same year for shift 2:
+
+```shell
+$ cd src
+$ ./05-cand-info-vices.py -y 2010 -t 2
+```
+
+#### 6. Checking and analyzing data 
 
 There is a data dictionary that can be downloaded here: [Dictionary](doc/dictionary-data.xlsx). 
 
