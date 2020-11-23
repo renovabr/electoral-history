@@ -37,8 +37,8 @@ def main(argv):
         elif opt in ('-s', '--state'):
             state = arg
 
-    if year == '2010' or year == '2012' or year == '2014' or year == '2016' or year == '2018':
-        if year == '2016' or year == '2012':
+    if year == '2010' or year == '2012' or year == '2014' or year == '2016' or year == '2018' or year == '2020':
+        if year == '2016' or year == '2012' or year == '2020':
             STATES.remove('DF')
     else:
         print('Year is invalid!')
@@ -108,6 +108,10 @@ def main(argv):
         df1 = df1.set_axis(COLS_CONSULT_CANDIDATES, axis=1, inplace=False)
         df1 = df1.replace(np.nan, '', regex=True)
         dfcount = df1['election_year'].count()
+
+        df1['nr_cpf_candidate'] = df1['nr_cpf_candidate'].astype('str')
+        df1['nr_cpf_candidate'] = df1['nr_cpf_candidate'].apply(
+            lambda x: x.zfill(11))
 
         df1['dt_tse_generation'] = pd.to_datetime(
             df1['dt_tse_generation']).astype('str')

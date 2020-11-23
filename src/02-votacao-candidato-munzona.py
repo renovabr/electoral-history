@@ -37,8 +37,8 @@ def main(argv):
         elif opt in ('-s', '--state'):
             state = arg
 
-    if year == '2010' or year == '2012' or year == '2014' or year == '2016' or year == '2018':
-        if year == '2012' or year == '2016':
+    if year == '2010' or year == '2012' or year == '2014' or year == '2016' or year == '2018' or year == '2020':
+        if year == '2012' or year == '2016' or year == '2020':
             STATES.remove('DF')
     else:
         print('Year is invalid!')

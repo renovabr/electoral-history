@@ -69,7 +69,8 @@ function get_bem_data() {
 if [ $# -gt 0 ]; then
   if [ "${1}" == "2010" ] || 
     [ "${1}" == "2012" ] || [ "${1}" == "2014" ] || 
-    [ "${1}" == "2016" ] || [ "${1}" == "2018" ]; then
+    [ "${1}" == "2016" ] || [ "${1}" == "2018" ] || 
+    [ "${1}" == "2020" ]; then
     echo "YEAR is valid ${1}"
   else
     echo "YEAR is not valid ${1}"
@@ -79,7 +80,7 @@ if [ $# -gt 0 ]; then
   get_vot_data "${1}" &&
   get_bem_data "${1}"
 else
-  echo "Add argument YEAR eg: 2010 2012 2014 2016 2018"
+  echo "Add argument YEAR eg: 2010 2012 2014 2016 2018 2020"
 fi
 
 exit 0
